@@ -31,8 +31,6 @@ struct HTTPClientTests {
 
     // MARK: - signIn
 
-    // MARK: - signIn
-
     @Test("signIn returns token on 200")
     func signIn_success_returnsToken() async throws {
         let client = makeClient()

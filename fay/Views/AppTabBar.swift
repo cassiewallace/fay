@@ -13,6 +13,11 @@ struct AppTabBar: View {
 
     init(token: String) {
         self.token = token
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = UIColor.systemBackground
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+        UITabBar.appearance().standardAppearance = appearance
     }
 
     // MARK: - Body

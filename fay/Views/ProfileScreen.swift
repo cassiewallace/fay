@@ -20,6 +20,8 @@ struct ProfileScreen: View {
                     signOut()
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.background.primary.ignoresSafeArea())
             .navigationTitle(Copy.Tabs.profile)
             .navigationBarTitleDisplayMode(.large)
         }

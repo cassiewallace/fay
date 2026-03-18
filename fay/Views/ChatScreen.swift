@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ChatScreen: View {
+
+    // MARK: - Body
+
     var body: some View {
         NavigationStack {
             ContentUnavailableView(Copy.Chat.empty, image: "icon-chats")

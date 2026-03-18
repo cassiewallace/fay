@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct AppTabBar: View {
-    let token: String
+
+    // MARK: - Lifecycle
 
     init(token: String) {
         self.token = token
     }
+
+    // MARK: - Body
+
+    let token: String
 
     var body: some View {
         TabView {

@@ -28,6 +28,8 @@ struct Appointment: Codable, Identifiable {
         return inProgress || startsWithinWindow
     }
 
+    // MARK: - CodingKeys
+
     enum CodingKeys: String, CodingKey {
         case id = "appointment_id"
         case patientID = "patient_id"

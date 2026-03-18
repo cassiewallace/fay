@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProfileScreen: View {
 
-    // MARK: - Private
+    // MARK: - Body
 
     @Environment(\.signOut) private var signOut
 

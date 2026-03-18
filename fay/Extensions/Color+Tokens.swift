@@ -8,10 +8,15 @@
 import SwiftUI
 
 extension Color {
+
+    // MARK: - Public
+
     static let background = BackgroundTokens()
     static let foreground = ForegroundTokens()
     static let border = BorderTokens()
     static let accentFill = AccentTokens()
+
+    // MARK: - Token Types
 
     struct BackgroundTokens {
         let primary = Color("BackgroundPrimary")

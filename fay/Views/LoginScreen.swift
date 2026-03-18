@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    var onSignedIn: (String) -> Void
 
-    @State private var viewModel = AuthViewModel()
+    // MARK: - Lifecycle
 
     init(onSignedIn: @escaping (String) -> Void) {
         self.onSignedIn = onSignedIn
     }
 
+    // MARK: - Body
+
+    var onSignedIn: (String) -> Void
+    @State private var viewModel = AuthViewModel()
     @State private var username = ""
     @State private var password = ""
     @FocusState private var focusedField: Field?
@@ -47,6 +50,8 @@ struct LoginScreen: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
+
+    // MARK: - Private
 
     private var loginCard: some View {
         formSection

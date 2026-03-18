@@ -9,10 +9,15 @@ import Foundation
 
 /// Represents the loading, content, and error states of a view that fetches data.
 enum ViewState<T> {
+
+    // MARK: - Cases
+
     case idle
     case loading
     case loaded(T)
     case error(String)
+
+    // MARK: - Public
 
     var isLoading: Bool {
         if case .loading = self { return true }

@@ -8,19 +8,25 @@
 import SwiftUI
 
 struct AppointmentsList: View {
-    let token: String
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    // MARK: - Lifecycle
 
-    @State private var viewModel = AppointmentsViewModel()
-    @State private var selectedTab: AppointmentTab = .upcoming
-    @State private var isShowingNewAppointment: Bool = false
-
-    init(token: String) {
+    init(token: String, previewViewModel: AppointmentsViewModel? = nil) {
         self.token = token
+        self.isPreview = previewViewModel != nil
+        _viewModel = State(initialValue: previewViewModel ?? AppointmentsViewModel())
     }
 
-    enum AppointmentTab: Int, CaseIterable {
+    // MARK: - Body
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var viewModel: AppointmentsViewModel
+    @State private var selectedTab: AppointmentTab = .upcoming
+    @State private var isShowingNewAppointment = false
+    let token: String
+    private let isPreview: Bool
+
+    private enum AppointmentTab: Int, CaseIterable {
         case upcoming = 0, past = 1
 
         var label: String {
@@ -65,6 +71,7 @@ struct AppointmentsList: View {
             }
         }
         .task {
+            guard !isPreview else { return }
             await viewModel.loadAppointments(token: token)
         }
         .sheet(isPresented: $isShowingNewAppointment) {
@@ -77,6 +84,8 @@ struct AppointmentsList: View {
             }
         }
     }
+
+    // MARK: - Private
 
     private var tabPicker: some View {
         GeometryReader { geo in
@@ -166,7 +175,7 @@ struct AppointmentsList: View {
         VStack(spacing: Constants.m) {
             Spacer()
             Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 48))
+                .font(.system(size: Constants.xxxl))
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
             Text(message)
@@ -186,54 +195,12 @@ struct AppointmentsList: View {
 
 // MARK: - Previews
 
-#Preview("Upcoming") {
+#Preview {
     let vm = AppointmentsViewModel()
-    vm.state = .loaded([.previewUpcoming1, .previewUpcoming2, .previewUpcoming3])
-    return AppointmentsList(token: "preview")
-        .withViewModel(vm)
+    vm.state = .loaded([
+        .previewUpcoming1, .previewUpcoming2, .previewUpcoming3,
+        .previewPast1, .previewPast2
+    ])
+    return AppointmentsList(token: "preview", previewViewModel: vm)
 }
 
-#Preview("Past") {
-    let vm = AppointmentsViewModel()
-    vm.state = .loaded([.previewPast1, .previewPast2])
-    return AppointmentsList(token: "preview")
-        .withViewModel(vm)
-        .withSelectedTab(.past)
-}
-
-#Preview("Empty — Upcoming") {
-    let vm = AppointmentsViewModel()
-    vm.state = .loaded([])
-    return AppointmentsList(token: "preview")
-        .withViewModel(vm)
-}
-
-#Preview("Loading") {
-    let vm = AppointmentsViewModel()
-    vm.state = .loading
-    return AppointmentsList(token: "preview")
-        .withViewModel(vm)
-}
-
-#Preview("Error") {
-    let vm = AppointmentsViewModel()
-    vm.state = .error(Copy.Errors.generic)
-    return AppointmentsList(token: "preview")
-        .withViewModel(vm)
-}
-
-// MARK: - Preview Helpers
-
-private extension AppointmentsList {
-    func withViewModel(_ vm: AppointmentsViewModel) -> AppointmentsList {
-        var copy = self
-        copy.viewModel = vm
-        return copy
-    }
-
-    func withSelectedTab(_ tab: AppointmentTab) -> AppointmentsList {
-        var copy = self
-        copy.selectedTab = tab
-        return copy
-    }
-}

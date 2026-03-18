@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - HTTPClientError
+
 enum HTTPClientError: Error, LocalizedError {
     case unauthorized
     case invalidResponse
@@ -24,15 +26,24 @@ enum HTTPClientError: Error, LocalizedError {
     }
 }
 
-struct HTTPClient {
-    static let shared = HTTPClient()
+// MARK: - HTTPClient
 
-    private let baseURL = APIConstants.baseURL
-    private let session: URLSession
+struct HTTPClient {
+
+    // MARK: - Lifecycle
+
+    static let shared = HTTPClient()
 
     init(session: URLSession = .shared) {
         self.session = session
     }
+
+    // MARK: - Private
+
+    private let baseURL = APIConstants.baseURL
+    private let session: URLSession
+
+    // MARK: - Public
 
     func signIn(username: String, password: String) async throws -> String {
         let url = baseURL.appendingPathComponent(APIConstants.signInPath)

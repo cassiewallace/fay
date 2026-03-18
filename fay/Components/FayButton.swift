@@ -9,14 +9,8 @@ import SwiftUI
 
 /// Primary action button with optional leading icon and loading state.
 struct FayButton: View {
-    /// Optional icon shown before the label.
-    let icon: Image?
-    /// Button label text.
-    let copy: String
-    /// Action to perform on tap.
-    let action: (() -> ())?
-    /// When true, shows a spinner instead of the label.
-    let isLoading: Bool
+
+    // MARK: - Lifecycle
 
     init(icon: Image? = nil, copy: String, action: (() -> Void)? = nil, isLoading: Bool = false) {
         self.icon = icon
@@ -24,6 +18,17 @@ struct FayButton: View {
         self.action = action
         self.isLoading = isLoading
     }
+
+    // MARK: - Body
+
+    /// Optional icon shown before the label.
+    let icon: Image?
+    /// Button label text.
+    let copy: String
+    /// Action to perform on tap.
+    let action: (() -> Void)?
+    /// When true, shows a spinner instead of the label.
+    let isLoading: Bool
 
     var body: some View {
         Button {

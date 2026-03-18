@@ -23,11 +23,4 @@ enum Constants {
     static let xxl: CGFloat = 32
     /// 48pt
     static let xxxl: CGFloat = 48
-
-    /// 12pt — calendar month label
-    static let calendarMonthFontSize: CGFloat = 12
-    /// 18pt — calendar day label
-    static let calendarDayFontSize: CGFloat = 18
-    /// DateFormat for abbreviated month (e.g. "Jan")
-    static let calendarMonthFormat = "MMM"
 }

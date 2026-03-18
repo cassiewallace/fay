@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct JournalScreen: View {
+
+    // MARK: - Body
+
     var body: some View {
         NavigationStack {
             ContentUnavailableView(Copy.Journal.empty, image: "icon-notebook")

@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct SignOutAction {
+
+    // MARK: - Public
+
     let perform: () -> Void
 
     func callAsFunction() {
         perform()
     }
 }
+
+// MARK: - Environment
 
 private struct SignOutActionKey: EnvironmentKey {
     static let defaultValue = SignOutAction { }

@@ -9,6 +9,9 @@ import Foundation
 
 /// API configuration.
 enum APIConstants {
+
+    // MARK: - Public
+
     static let baseURL = URL(string: "https://node-api-for-candidates.onrender.com")!
     static let signInPath = "signin"
     static let appointmentsPath = "appointments"

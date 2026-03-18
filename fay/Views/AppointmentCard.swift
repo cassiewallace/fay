@@ -20,8 +20,8 @@ struct AppointmentCard: View {
     }
 
     private var cardContent: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(alignment: .top, spacing: 16) {
+        VStack(alignment: .leading, spacing: 14) {
+            HStack(alignment: .center, spacing: 16) {
                 dateBadge
                 appointmentInfo
             }
@@ -30,31 +30,47 @@ struct AppointmentCard: View {
                 joinButton
             }
         }
-        .padding(16)
+        .padding(showJoinButton ? 20 : 16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(cardBackground)
+        .clipShape(.rect(cornerRadius: 16))
+    }
+
+    private var isPast: Bool {
+        appointment.start < .now
     }
 
     private var dateBadge: some View {
-        VStack(spacing: 2) {
+        let monthForeground: Color
+        let badgeBackground: Color
+
+        if isPast {
+            monthForeground = Color.content.onMuted
+            badgeBackground = Color.fill.muted
+        } else {
+            monthForeground = Color.content.onAccentSubtle
+            badgeBackground = Color.fill.accentSubtle
+        }
+
+        return VStack(spacing: 0) {
             Text(monthText)
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(.white)
+                .foregroundStyle(monthForeground)
                 .accessibilityHidden(true)
             Text(dayText)
                 .font(.title2.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(.primary)
                 .accessibilityHidden(true)
         }
-        .frame(width: 52, height: 60)
-        .background(Color.brand.primary)
+        .frame(width: 56, height: 64)
+        .background(badgeBackground)
         .clipShape(.rect(cornerRadius: 10))
     }
 
     private var appointmentInfo: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(timeRangeText)
-                .font(.subheadline.weight(.semibold))
+        VStack(alignment: .leading, spacing: 6) {
+            Text(timeText)
+                .font(.body.weight(.semibold))
                 .foregroundStyle(.primary)
             Text("\(appointment.appointmentType) with \(Copy.Appointments.providerName)")
                 .font(.caption)
@@ -72,7 +88,8 @@ struct AppointmentCard: View {
                     .font(.subheadline.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 44)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 16)
         }
         .joinButtonStyle()
         .accessibilityLabel(Copy.Appointments.joinButton)
@@ -80,13 +97,26 @@ struct AppointmentCard: View {
 
     @ViewBuilder
     private var cardBackground: some View {
-        if #available(iOS 26, *) {
-            Color.clear
-                .glassEffect(.regular, in: .rect(cornerRadius: 16))
+        if showJoinButton {
+            if #available(iOS 26, *) {
+                Color.clear
+                    .glassEffect(.regular, in: .rect(cornerRadius: 16))
+            } else {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color.surface.card)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .strokeBorder(Color.border.subtle, lineWidth: 1)
+                    )
+                    .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
+            }
         } else {
-            Color.background.card
-                .clipShape(.rect(cornerRadius: 16))
-                .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.surface.card)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .strokeBorder(Color.border.default, lineWidth: 1)
+                )
         }
     }
 
@@ -100,18 +130,23 @@ struct AppointmentCard: View {
         appointment.start.formatted(.dateTime.day().locale(.autoupdatingCurrent))
     }
 
-    private var timeRangeText: String {
-        let style = Date.FormatStyle()
-            .hour()
-            .minute()
-            .locale(.autoupdatingCurrent)
-        let start = appointment.start.formatted(style)
-        let end = appointment.end.formatted(style)
-        // specificName gives DST-aware abbreviation (e.g. PDT vs PST), shown once at the end
-        let tz = appointment.start.formatted(
-            .dateTime.timeZone(.specificName(.short)).locale(.autoupdatingCurrent)
-        )
-        return "\(start) - \(end) (\(tz))"
+    private var timeText: String {
+        if showJoinButton {
+            // Expanded format for the current appointment: "11:00 AM - 12:00 PM (PDT)"
+            let style = Date.FormatStyle().hour().minute().locale(.autoupdatingCurrent)
+            let start = appointment.start.formatted(style)
+            let end = appointment.end.formatted(style)
+            // specificName gives DST-aware abbreviation (e.g. PDT vs PST), shown once at the end
+            let tz = appointment.start.formatted(
+                .dateTime.timeZone(.specificName(.short)).locale(.autoupdatingCurrent)
+            )
+            return "\(start) - \(end) (\(tz))"
+        } else {
+            // Short format for all other cards: "11 AM"
+            return appointment.start.formatted(
+                .dateTime.hour(.defaultDigits(amPM: .abbreviated)).locale(.autoupdatingCurrent)
+            )
+        }
     }
 
     private var accessibilityLabel: String {
@@ -120,31 +155,28 @@ struct AppointmentCard: View {
         )
         let timeStyle = Date.FormatStyle().hour().minute().locale(.autoupdatingCurrent)
         let startTime = appointment.start.formatted(timeStyle)
-        let endTime = appointment.end.formatted(timeStyle)
-        // Use DST-aware specific name for the appointment's date, not today's offset
-        let tz = appointment.start.formatted(
-            .dateTime.timeZone(.specificName(.long)).locale(.autoupdatingCurrent)
-        )
-        return "\(date), \(startTime) to \(endTime), \(tz), "
-            + "\(appointment.appointmentType) with \(Copy.Appointments.providerName)"
+        let type = "\(appointment.appointmentType) with \(Copy.Appointments.providerName)"
+
+        if showJoinButton {
+            let endTime = appointment.end.formatted(timeStyle)
+            let tz = appointment.start.formatted(
+                .dateTime.timeZone(.specificName(.long)).locale(.autoupdatingCurrent)
+            )
+            return "\(date), \(startTime) to \(endTime), \(tz), \(type)"
+        } else {
+            return "\(date), \(startTime), \(type)"
+        }
     }
 }
 
 // MARK: - Join Button Style
 
 private extension View {
-    @ViewBuilder
     func joinButtonStyle() -> some View {
-        if #available(iOS 26, *) {
-            self
-                .foregroundStyle(.white)
-                .glassEffect(.regular.tint(Color.brand.primary).interactive(), in: .rect(cornerRadius: 12))
-        } else {
-            self
-                .foregroundStyle(.white)
-                .background(Color.brand.primary)
-                .clipShape(.rect(cornerRadius: 12))
-        }
+        self
+            .foregroundStyle(.white)
+            .background(Color.fill.accent)
+            .clipShape(.rect(cornerRadius: 8))
     }
 }
 

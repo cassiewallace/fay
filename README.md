@@ -23,7 +23,7 @@ See [`PLAN.md`](PLAN.md) for the full implementation plan, architecture decision
 | Area | Time |
 |---|---|
 | Login screen | ~0.25 hours |
-| Appointments screen | ~0.75 hours |
+| Appointments screen | ~1.5 hours |
 | Nice-to-haves (Liquid Glass, accessibility, color system, localization) | TODO |
 | Additional (project setup, README, planning) | 0.5 hours (initial build plan) |
 | **Total** | **TODO** |

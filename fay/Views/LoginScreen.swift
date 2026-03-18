@@ -28,18 +28,16 @@ struct LoginScreen: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.background.primary.ignoresSafeArea()
-
-            ScrollView {
-                VStack(spacing: 32) {
-                    headerSection
-                    formSection
-                }
-                .padding(.horizontal, 24)
-                .padding(.top, 80)
+        ScrollView {
+            VStack(spacing: 32) {
+                headerSection
+                formSection
             }
+            .padding(.horizontal, 24)
+            .padding(.top, 80)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.surface.primary.ignoresSafeArea())
     }
 
     private var headerSection: some View {
@@ -68,7 +66,7 @@ struct LoginScreen: View {
                 .focused($focusedField, equals: .username)
                 .onSubmit { focusedField = .password }
                 .padding()
-                .background(Color.background.card)
+                .background(Color.surface.card)
                 .clipShape(.rect(cornerRadius: 12))
                 .accessibilityLabel(Copy.Login.emailPlaceholder)
 
@@ -77,7 +75,7 @@ struct LoginScreen: View {
                 .focused($focusedField, equals: .password)
                 .onSubmit(attemptSignIn)
                 .padding()
-                .background(Color.background.card)
+                .background(Color.surface.card)
                 .clipShape(.rect(cornerRadius: 12))
                 .accessibilityLabel(Copy.Login.passwordPlaceholder)
 
@@ -141,7 +139,7 @@ private struct PrimaryButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(.white)
             .background(
-                Color.brand.primary
+                Color.fill.accent
                     .opacity(configuration.isPressed ? 0.8 : 1)
             )
             .clipShape(.rect(cornerRadius: 12))
@@ -172,7 +170,7 @@ private struct PrimaryButtonStyle: ButtonStyle {
 
 private extension LoginScreen {
     func withViewModel(_ vm: AuthViewModel) -> LoginScreen {
-        var copy = self
+        let copy = self
         copy.viewModel = vm
         return copy
     }

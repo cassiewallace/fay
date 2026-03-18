@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatScreen: View {
     var body: some View {
         NavigationStack {
-            Color.background.primary
+            Color.surface.primary
                 .ignoresSafeArea()
                 .navigationTitle(Copy.Tabs.chat)
                 .navigationBarTitleDisplayMode(.large)

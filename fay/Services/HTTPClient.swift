@@ -29,7 +29,7 @@ enum HTTPClientError: Error, LocalizedError {
     }
 }
 
-final class HTTPClient: HTTPClientProtocol {
+struct HTTPClient: HTTPClientProtocol {
     static let shared = HTTPClient()
 
     private let baseURL = URL(string: "https://node-api-for-candidates.onrender.com")!

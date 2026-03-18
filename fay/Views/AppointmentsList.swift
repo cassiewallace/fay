@@ -43,14 +43,16 @@ struct AppointmentsList: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.background.primary.ignoresSafeArea())
+            .background(Color.surface.primary.ignoresSafeArea())
             .navigationTitle(Copy.Appointments.screenTitle)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { /* no-op */ } label: {
-                        Image("icon-add")
+                        Label(Copy.Appointments.newButton, image: "icon-add")
+                            .labelStyle(.titleAndIcon)
                     }
+                    .buttonStyle(NewAppointmentButtonStyle())
                     .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
                 }
             }
@@ -79,7 +81,7 @@ struct AppointmentsList: View {
                         } label: {
                             Text(tab.label)
                                 .font(.subheadline.weight(isSelected ? .semibold : .regular))
-                                .foregroundStyle(isSelected ? Color.brand.primary : .secondary)
+                                .foregroundStyle(isSelected ? Color.fill.accent : .secondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 10)
                         }
@@ -88,7 +90,7 @@ struct AppointmentsList: View {
                 }
 
                 Rectangle()
-                    .fill(Color.brand.primary)
+                    .fill(Color.fill.accent)
                     .frame(width: tabWidth, height: 2)
                     .offset(x: underlineX)
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: underlineX)
@@ -159,6 +161,17 @@ struct AppointmentsList: View {
     }
 }
 
+// MARK: - New Appointment Button Style
+
+private struct NewAppointmentButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.subheadline.weight(.medium))
+            .foregroundStyle(.primary)
+            .opacity(configuration.isPressed ? 0.5 : 1)
+    }
+}
+
 // MARK: - Previews
 
 #Preview("Upcoming") {
@@ -193,13 +206,13 @@ struct AppointmentsList: View {
 
 private extension AppointmentsList {
     func withViewModel(_ vm: AppointmentsViewModel) -> AppointmentsList {
-        var copy = self
+        let copy = self
         copy.viewModel = vm
         return copy
     }
 
     func withSelectedTab(_ tab: AppointmentTab) -> AppointmentsList {
-        var copy = self
+        let copy = self
         copy.selectedTab = tab
         return copy
     }

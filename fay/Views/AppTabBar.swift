@@ -38,7 +38,7 @@ struct AppTabBar: View {
                     Label(Copy.Tabs.profile, image: "icon-user")
                 }
         }
-        .tint(.brand.primary)
+        .tint(.fill.accent)
     }
 }
 

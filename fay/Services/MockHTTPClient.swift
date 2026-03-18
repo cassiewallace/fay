@@ -10,7 +10,7 @@
 
 import Foundation
 
-final class MockHTTPClient: HTTPClientProtocol {
+struct MockHTTPClient: HTTPClientProtocol {
 
     // MARK: - Public
 

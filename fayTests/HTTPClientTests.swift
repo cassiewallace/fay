@@ -54,6 +54,18 @@ struct HTTPClientTests {
         }
     }
 
+    @Test("signIn throws DecodingError on malformed JSON")
+    func signIn_malformedJSON_throwsDecodingError() async throws {
+        let client = makeClient()
+        let malformedData = Data(#"{"not_a_token": true}"#.utf8)
+        MockURLProtocol.requestHandler = { _ in (self.makeResponse(statusCode: 200), malformedData) }
+        defer { MockURLProtocol.requestHandler = nil }
+
+        await #expect(throws: (any Error).self) {
+            try await client.signIn(username: "john", password: "12345")
+        }
+    }
+
     // MARK: - fetchAppointments
 
     @Test("fetchAppointments decodes appointments on 200")

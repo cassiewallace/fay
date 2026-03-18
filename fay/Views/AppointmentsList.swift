@@ -13,18 +13,18 @@ struct AppointmentsList: View {
 
     init(token: String, previewViewModel: AppointmentsViewModel? = nil) {
         self.token = token
+        self.viewModel = previewViewModel ?? AppointmentsViewModel()
         self.isPreview = previewViewModel != nil
-        _viewModel = State(initialValue: previewViewModel ?? AppointmentsViewModel())
     }
 
     // MARK: - Body
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var viewModel: AppointmentsViewModel
+    private let viewModel: AppointmentsViewModel
+    private let isPreview: Bool
+    let token: String
     @State private var selectedTab: AppointmentTab = .upcoming
     @State private var isShowingNewAppointment = false
-    let token: String
-    private let isPreview: Bool
 
     private enum AppointmentTab: Int, CaseIterable {
         case upcoming = 0, past = 1

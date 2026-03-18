@@ -13,21 +13,15 @@ struct ProfileScreen: View {
 
     @Environment(\.signOut) private var signOut
 
-    // MARK: - Body
-
     var body: some View {
         NavigationStack {
-            Color.background.primary
-                .ignoresSafeArea()
-                .navigationTitle(Copy.Tabs.profile)
-                .navigationBarTitleDisplayMode(.large)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(Copy.Profile.signOutButton, role: .destructive) {
-                            signOut()
-                        }
-                    }
+            List {
+                Button(Copy.Profile.signOutButton, role: .destructive) {
+                    signOut()
                 }
+            }
+            .navigationTitle(Copy.Tabs.profile)
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }

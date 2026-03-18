@@ -10,11 +10,11 @@ import SwiftUI
 struct AppointmentsList: View {
     let token: String
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var viewModel: AppointmentsViewModel
     @State private var selectedTab: AppointmentTab = .upcoming
     @State private var isShowingNewAppointment: Bool = false
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     init(token: String, client: any HTTPClientProtocol = HTTPClient.shared) {
         self.token = token

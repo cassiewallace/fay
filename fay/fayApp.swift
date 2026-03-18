@@ -12,8 +12,7 @@ struct fayApp: App {
 
     // MARK: - Private
 
-    // Service is suspended — swap MockHTTPClient for HTTPClient.shared when restored.
-    private let client: any HTTPClientProtocol = MockHTTPClient()
+    private let client: any HTTPClientProtocol = HTTPClient.shared
 
     @State private var token: String?
 

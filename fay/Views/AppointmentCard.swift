@@ -27,7 +27,8 @@ struct AppointmentCard: View {
             }
 
             if showJoinButton {
-                joinButton
+                FayButton(icon: Image("icon-video-camera"),
+                          copy: Copy.Appointments.joinButton)
             }
         }
         .padding(showJoinButton ? 20 : 16)
@@ -77,22 +78,6 @@ struct AppointmentCard: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var joinButton: some View {
-        Button { /* no-op */ } label: {
-            HStack(spacing: 8) {
-                Image("icon-video-camera")
-                    .accessibilityHidden(true)
-                Text(Copy.Appointments.joinButton)
-                    .font(.subheadline.weight(.semibold))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .padding(.horizontal, 16)
-        }
-        .joinButtonStyle()
-        .accessibilityLabel(Copy.Appointments.joinButton)
     }
 
     @ViewBuilder
@@ -169,30 +154,16 @@ struct AppointmentCard: View {
     }
 }
 
-// MARK: - Join Button Style
-
-private extension View {
-    func joinButtonStyle() -> some View {
-        self
-            .foregroundStyle(.white)
-            .background(Color.fill.accent)
-            .clipShape(.rect(cornerRadius: 8))
-    }
-}
-
 // MARK: - Previews
 
-#Preview("With Join Button") {
-    AppointmentCard(appointment: .previewUpcoming1, showJoinButton: true)
-        .padding()
-}
-
-#Preview("Without Join Button") {
-    AppointmentCard(appointment: .previewUpcoming2, showJoinButton: false)
-        .padding()
-}
-
-#Preview("Past") {
-    AppointmentCard(appointment: .previewPast1, showJoinButton: false)
-        .padding()
+#Preview {
+    List {
+        AppointmentCard(appointment: .previewUpcoming1, showJoinButton: true)
+            .listRowSeparator(.hidden)
+        AppointmentCard(appointment: .previewUpcoming2, showJoinButton: false)
+            .listRowSeparator(.hidden)
+        AppointmentCard(appointment: .previewPast1, showJoinButton: false)
+            .listRowSeparator(.hidden)
+    }
+    .listStyle(.plain)
 }

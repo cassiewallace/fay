@@ -40,6 +40,13 @@ struct LoginScreen: View {
                 loginCard
                     .frame(width: geometry.size.width)
             }
+            .overlay(alignment: .topLeading) {
+                Image("Logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 100, maxHeight: 80)
+                    .padding(.leading, Constants.xl)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

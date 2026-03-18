@@ -12,6 +12,7 @@ A healthcare appointment app for iOS (17.0+), built with SwiftUI.
 - The "Join appointment" button is present on the first upcoming appointment as a placeholder; it performs no action
 - Provider name ("Jane Williams, RD") is hardcoded since the API does not return provider metadata
 - All user-facing strings run through `String(localized:)` backed by a `Copy` enum and String Catalog (`Localizable.xcstrings`) for future localization
+- The New Appointment action lives in the toolbar, enabling consistent placement and styling across deployment targets and leveraging the latest standards for iOS 26 with Liquid Glass
 - The API service (`node-api-for-candidates.onrender.com`) was suspended by its owner during development. The app currently uses `MockHTTPClient`, which returns a hardcoded token for `john`/`12345` and a realistic set of appointments. All live networking code (`HTTPClient`, `HTTPClientProtocol`) is intact — swapping back to the real API requires changing one line in `fayApp.swift`.
 
 ## Planning
@@ -22,8 +23,8 @@ See [`PLAN.md`](PLAN.md) for the full implementation plan, architecture decision
 
 | Area | Time |
 |---|---|
+| Project setup & planning) | 0.5 hours |
 | Login screen | ~0.25 hours |
 | Appointments screen | ~1.5 hours |
-| Nice-to-haves (Liquid Glass, accessibility, color system, localization) | TODO |
-| Additional (project setup, README, planning) | 0.5 hours (initial build plan) |
+| Nice-to-haves | ~.5 hours |
 | **Total** | **TODO** |

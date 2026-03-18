@@ -8,15 +8,12 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    var client: any HTTPClientProtocol
     var onSignedIn: (String) -> Void
 
-    @State private var viewModel: AuthViewModel
+    @State private var viewModel = AuthViewModel()
 
-    init(client: any HTTPClientProtocol = HTTPClient.shared, onSignedIn: @escaping (String) -> Void) {
-        self.client = client
+    init(onSignedIn: @escaping (String) -> Void) {
         self.onSignedIn = onSignedIn
-        _viewModel = State(initialValue: AuthViewModel(client: client))
     }
 
     @State private var username = ""
@@ -145,13 +142,13 @@ struct LoginScreen: View {
 // MARK: - Previews
 
 #Preview("Default") {
-    LoginScreen(client: MockHTTPClient()) { _ in }
+    LoginScreen { _ in }
 }
 
 #Preview("Error") {
-    let vm = AuthViewModel(client: MockHTTPClient())
+    let vm = AuthViewModel()
     vm.state = .error(Copy.Errors.unauthorized)
-    return LoginScreen(client: MockHTTPClient(), onSignedIn: { _ in })
+    return LoginScreen(onSignedIn: { _ in })
         .withViewModel(vm)
 }
 

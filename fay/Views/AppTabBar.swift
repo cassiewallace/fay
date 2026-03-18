@@ -9,16 +9,14 @@ import SwiftUI
 
 struct AppTabBar: View {
     let token: String
-    var client: any HTTPClientProtocol
 
-    init(token: String, client: any HTTPClientProtocol = HTTPClient.shared) {
+    init(token: String) {
         self.token = token
-        self.client = client
     }
 
     var body: some View {
         TabView {
-            AppointmentsList(token: token, client: client)
+            AppointmentsList(token: token)
                 .tabItem {
                     Label(Copy.Tabs.appointments, image: "icon-calendar")
                 }
@@ -45,5 +43,5 @@ struct AppTabBar: View {
 // MARK: - Previews
 
 #Preview("Default") {
-    AppTabBar(token: "preview", client: MockHTTPClient())
+    AppTabBar(token: "preview")
 }

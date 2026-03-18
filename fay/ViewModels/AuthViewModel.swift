@@ -14,8 +14,8 @@ final class AuthViewModel {
 
     // MARK: - Lifecycle
 
-    init(client: any HTTPClientProtocol = HTTPClient.shared) {
-        self.client = client
+    init() {
+        self.client = HTTPClient.shared
     }
 
     // MARK: - Public
@@ -36,5 +36,5 @@ final class AuthViewModel {
 
     // MARK: - Private
 
-    private let client: any HTTPClientProtocol
+    private let client: HTTPClient
 }

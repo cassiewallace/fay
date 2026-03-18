@@ -7,13 +7,6 @@
 
 import Foundation
 
-// MARK: - Protocol
-
-protocol HTTPClientProtocol {
-    func signIn(username: String, password: String) async throws -> String
-    func fetchAppointments(token: String) async throws -> [Appointment]
-}
-
 enum HTTPClientError: Error, LocalizedError {
     case unauthorized
     case invalidResponse
@@ -31,9 +24,7 @@ enum HTTPClientError: Error, LocalizedError {
     }
 }
 
-// MARK: - Implementation
-
-struct HTTPClient: HTTPClientProtocol {
+struct HTTPClient {
     static let shared = HTTPClient()
 
     private let baseURL = APIConstants.baseURL

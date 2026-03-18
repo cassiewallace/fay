@@ -12,7 +12,7 @@ enum APIConstants {
     static let baseURL = URL(string: "https://node-api-for-candidates.onrender.com")!
     static let signInPath = "signin"
     static let appointmentsPath = "appointments"
-    /// Demo credentials from API documentation (used by MockHTTPClient).
+    /// Demo credentials from API documentation.
     static let demoUsername = "john"
     static let demoPassword = "12345"
 }

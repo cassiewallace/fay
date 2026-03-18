@@ -12,8 +12,6 @@ struct fayApp: App {
 
     // MARK: - Private
 
-    private let client: any HTTPClientProtocol = HTTPClient.shared
-
     @State private var token: String?
 
     // MARK: - Body
@@ -21,10 +19,10 @@ struct fayApp: App {
     var body: some Scene {
         WindowGroup {
             if let token {
-                AppTabBar(token: token, client: client)
+                AppTabBar(token: token)
                     .environment(\.signOut, SignOutAction { self.token = nil })
             } else {
-                LoginScreen(client: client) { signedInToken in
+                LoginScreen { signedInToken in
                     token = signedInToken
                 }
             }

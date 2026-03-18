@@ -14,8 +14,8 @@ final class AppointmentsViewModel {
 
     // MARK: - Lifecycle
 
-    init(client: any HTTPClientProtocol = HTTPClient.shared) {
-        self.client = client
+    init() {
+        self.client = HTTPClient.shared
     }
 
     // MARK: - Public
@@ -49,5 +49,5 @@ final class AppointmentsViewModel {
 
     // MARK: - Private
 
-    private let client: any HTTPClientProtocol
+    private let client: HTTPClient
 }

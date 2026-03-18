@@ -12,13 +12,12 @@ struct AppointmentsList: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    @State private var viewModel: AppointmentsViewModel
+    @State private var viewModel = AppointmentsViewModel()
     @State private var selectedTab: AppointmentTab = .upcoming
     @State private var isShowingNewAppointment: Bool = false
 
-    init(token: String, client: any HTTPClientProtocol = HTTPClient.shared) {
+    init(token: String) {
         self.token = token
-        _viewModel = State(initialValue: AppointmentsViewModel(client: client))
     }
 
     enum AppointmentTab: Int, CaseIterable {
@@ -188,38 +187,38 @@ struct AppointmentsList: View {
 // MARK: - Previews
 
 #Preview("Upcoming") {
-    let vm = AppointmentsViewModel(client: MockHTTPClient())
+    let vm = AppointmentsViewModel()
     vm.state = .loaded([.previewUpcoming1, .previewUpcoming2, .previewUpcoming3])
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview")
         .withViewModel(vm)
 }
 
 #Preview("Past") {
-    let vm = AppointmentsViewModel(client: MockHTTPClient())
+    let vm = AppointmentsViewModel()
     vm.state = .loaded([.previewPast1, .previewPast2])
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview")
         .withViewModel(vm)
         .withSelectedTab(.past)
 }
 
 #Preview("Empty — Upcoming") {
-    let vm = AppointmentsViewModel(client: MockHTTPClient())
+    let vm = AppointmentsViewModel()
     vm.state = .loaded([])
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview")
         .withViewModel(vm)
 }
 
 #Preview("Loading") {
-    let vm = AppointmentsViewModel(client: MockHTTPClient())
+    let vm = AppointmentsViewModel()
     vm.state = .loading
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview")
         .withViewModel(vm)
 }
 
 #Preview("Error") {
-    let vm = AppointmentsViewModel(client: MockHTTPClient())
+    let vm = AppointmentsViewModel()
     vm.state = .error(Copy.Errors.generic)
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview")
         .withViewModel(vm)
 }
 

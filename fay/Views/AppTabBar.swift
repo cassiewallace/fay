@@ -20,22 +20,22 @@ struct AppTabBar: View {
         TabView {
             AppointmentsList(token: token, client: client)
                 .tabItem {
-                    Label(Copy.Tabs.appointments, systemImage: "calendar")
+                    Label(Copy.Tabs.appointments, image: "icon-calendar")
                 }
 
             ChatScreen()
                 .tabItem {
-                    Label(Copy.Tabs.chat, systemImage: "bubble.left.and.bubble.right")
+                    Label(Copy.Tabs.chat, image: "icon-chats")
                 }
 
             JournalScreen()
                 .tabItem {
-                    Label(Copy.Tabs.journal, systemImage: "note.text")
+                    Label(Copy.Tabs.journal, image: "icon-notebook")
                 }
 
             ProfileScreen()
                 .tabItem {
-                    Label(Copy.Tabs.profile, systemImage: "person.circle")
+                    Label(Copy.Tabs.profile, image: "icon-user")
                 }
         }
         .tint(.brand.primary)

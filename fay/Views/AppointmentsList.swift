@@ -48,8 +48,10 @@ struct AppointmentsList: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(Copy.Appointments.newButton) {}
-                        .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
+                    Button { /* no-op */ } label: {
+                        Image("icon-add")
+                    }
+                    .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
                 }
             }
         }
@@ -134,8 +136,10 @@ struct AppointmentsList: View {
     private func emptyView(for tab: AppointmentTab) -> some View {
         VStack(spacing: 12) {
             Spacer()
-            Image(systemName: "calendar")
-                .font(.system(size: 48))
+            Image("icon-calendar")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 48, height: 48)
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
             Text(tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast)

@@ -66,7 +66,7 @@ struct AppointmentCard: View {
     private var joinButton: some View {
         Button { /* no-op */ } label: {
             HStack(spacing: 8) {
-                Image(systemName: "video.fill")
+                Image("icon-video-camera")
                     .accessibilityHidden(true)
                 Text(Copy.Appointments.joinButton)
                     .font(.subheadline.weight(.semibold))

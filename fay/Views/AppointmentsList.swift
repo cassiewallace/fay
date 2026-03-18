@@ -90,40 +90,32 @@ struct AppointmentsList: View {
     // MARK: - Private
 
     private var tabPicker: some View {
-        GeometryReader { geo in
-            let tabWidth = geo.size.width / CGFloat(AppointmentTab.allCases.count)
-            let underlineX = CGFloat(selectedTab.rawValue) * tabWidth
-
-            ZStack(alignment: .bottomLeading) {
-                Divider()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
-
-                HStack(spacing: 0) {
-                    ForEach(AppointmentTab.allCases, id: \.self) { tab in
-                        let isSelected = selectedTab == tab
-                        Button {
-                            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
-                                selectedTab = tab
-                            }
-                        } label: {
+        VStack(spacing: 0) {
+            HStack(spacing: 0) {
+                ForEach(AppointmentTab.allCases, id: \.self) { tab in
+                    let isSelected = selectedTab == tab
+                    Button {
+                        withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
+                            selectedTab = tab
+                        }
+                    } label: {
+                        VStack(spacing: 0) {
                             Text(tab.label)
                                 .font(.subheadline.weight(.medium))
                                 .foregroundStyle(isSelected ? Color.accentFill.primary : .secondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, Constants.l)
+                            Rectangle()
+                                .fill(isSelected ? Color.accentFill.primary : Color.clear)
+                                .frame(height: Constants.xs)
+                                .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isSelected)
                         }
-                        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                     }
+                    .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                 }
-
-                Rectangle()
-                    .fill(Color.accentFill.primary)
-                    .frame(width: tabWidth, height: Constants.xs)
-                    .offset(x: underlineX)
-                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: underlineX)
             }
+            Divider()
         }
-        .frame(height: 44)
         .background(Color.background.primary)
     }
 
@@ -133,6 +125,7 @@ struct AppointmentsList: View {
             appointmentPage(for: .past).tag(AppointmentTab.past)
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
+        .clipped()
     }
 
     private func appointmentPage(for tab: AppointmentTab) -> some View {

@@ -22,7 +22,7 @@ struct AppointmentCard: View {
     private var cardContent: some View {
         VStack(alignment: .leading, spacing: Constants.m) {
             HStack(alignment: .center, spacing: Constants.l) {
-                dateBadge
+                CalendarIcon(date: appointment.start, variant: isPast ? .past : .upcoming)
                 appointmentInfo
             }
 
@@ -39,33 +39,6 @@ struct AppointmentCard: View {
 
     private var isPast: Bool {
         appointment.start < .now
-    }
-
-    private var dateBadge: some View {
-        let monthForeground: Color
-        let badgeBackground: Color
-
-        if isPast {
-            monthForeground = Color.content.onMuted
-            badgeBackground = Color.fill.muted
-        } else {
-            monthForeground = Color.content.onAccentSubtle
-            badgeBackground = Color.fill.accentSubtle
-        }
-
-        return VStack(spacing: 0) {
-            Text(monthText)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(monthForeground)
-                .accessibilityHidden(true)
-            Text(dayText)
-                .font(.title2.bold())
-                .foregroundStyle(.primary)
-                .accessibilityHidden(true)
-        }
-        .frame(width: 56, height: 64)
-        .background(badgeBackground)
-        .clipShape(.rect(cornerRadius: 10))
     }
 
     private var appointmentInfo: some View {

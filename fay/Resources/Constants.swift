@@ -28,5 +28,5 @@ enum Constants {
     /// 32pt
     static let xxl: CGFloat = 32
     /// 64pt
-    static let xxxl: CGFloat = 64
+    static let xxxl: CGFloat = 48
 }

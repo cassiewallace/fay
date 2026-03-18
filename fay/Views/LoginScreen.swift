@@ -34,7 +34,6 @@ struct LoginScreen: View {
                 formSection
             }
             .padding(.horizontal, Constants.xl)
-            .padding(.top, 80)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.surface.primary.ignoresSafeArea())
@@ -79,7 +78,8 @@ struct LoginScreen: View {
                 .clipShape(.rect(cornerRadius: Constants.m))
                 .accessibilityLabel(Copy.Login.passwordPlaceholder)
 
-            signInButton
+            FayButton(copy: Copy.Login.signInButton, action: attemptSignIn)
+                .disabled(viewModel.isLoading || username.isEmpty || password.isEmpty)
         }
     }
 
@@ -104,24 +104,6 @@ struct LoginScreen: View {
         .accessibilityAddTraits(.isStaticText)
     }
 
-    private var signInButton: some View {
-        Button(action: attemptSignIn) {
-            Group {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .tint(.white)
-                } else {
-                    Text(Copy.Login.signInButton)
-                        .font(.headline)
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-        }
-        .disabled(viewModel.isLoading || username.isEmpty || password.isEmpty)
-        .buttonStyle(PrimaryButtonStyle())
-    }
-
     private func attemptSignIn() {
         focusedField = nil
         Task {
@@ -129,20 +111,6 @@ struct LoginScreen: View {
                 onSignedIn(token)
             }
         }
-    }
-}
-
-// MARK: - Primary Button Style
-
-private struct PrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundStyle(.white)
-            .background(
-                Color.fill.accent
-                    .opacity(configuration.isPressed ? 0.8 : 1)
-            )
-            .clipShape(.rect(cornerRadius: Constants.m))
     }
 }
 

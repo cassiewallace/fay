@@ -8,17 +8,10 @@
 import SwiftUI
 
 extension Color {
-    static let brand = BrandTokens()
     static let surface = SurfaceTokens()
     static let fill = FillTokens()
     static let content = ContentTokens()
     static let border = BorderTokens()
-
-    /// Primary brand color and tints derived from it.
-    struct BrandTokens {
-        let primary = Color("AccentColor")
-        let onPrimary = Color.white
-    }
 
     /// Page- and card-level background colors.
     struct SurfaceTokens {
@@ -33,6 +26,8 @@ extension Color {
         /// Light tint of the accent color for de-emphasized elements on the same surface.
         let accentSubtle = Color("FillAccentSubtle")
         let muted = Color("DateBadgePastBackground")
+        let calendarPastTop = Color("FillCalendarPastTop")
+        let calendarPastBottom = Color("FillCalendarPastBottom")
     }
 
     /// Foreground/text colors intended for use on top of fills and surfaces.
@@ -40,6 +35,7 @@ extension Color {
         let onAccent = Color.white
         let onAccentSubtle = Color("AccentColor")
         let onMuted = Color("DateBadgePastForeground")
+        let calendarPast = Color("ContentCalendarPast")
     }
 
     /// Border and stroke colors.

@@ -117,16 +117,14 @@ struct AppointmentsList: View {
                 emptyView(for: tab)
             } else {
                 ScrollView {
-                    LazyVStack(spacing: Constants.m) {
-                        ForEach(
-                            Array(appointments.enumerated()),
-                            id: \.element.id
-                        ) { index, appointment in
-                            AppointmentCard(
-                                appointment: appointment,
-                                showJoinButton: tab == .upcoming && index == 0
-                            )
-                        }
+                    ForEach(
+                        Array(appointments.enumerated()),
+                        id: \.element.id
+                    ) { index, appointment in
+                        AppointmentCard(
+                            appointment: appointment,
+                            showJoinButton: tab == .upcoming && index == 0
+                        )
                     }
                     .padding(.horizontal, Constants.l)
                     .padding(.vertical, Constants.s)

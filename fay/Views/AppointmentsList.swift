@@ -12,6 +12,7 @@ struct AppointmentsList: View {
 
     @State private var viewModel: AppointmentsViewModel
     @State private var selectedTab: AppointmentTab = .upcoming
+    @State private var isShowingNewAppointment: Bool = false
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -35,7 +36,7 @@ struct AppointmentsList: View {
         NavigationStack {
             VStack(spacing: 0) {
                 tabPicker
-
+                
                 if viewModel.isLoading {
                     loadingView
                 } else {
@@ -48,10 +49,13 @@ struct AppointmentsList: View {
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { /* no-op */ } label: {
+                    Button {
+                        isShowingNewAppointment = true
+                    } label: {
                         Label(Copy.Appointments.newButton, image: "icon-add")
                             .labelStyle(.titleAndIcon)
                     }
+                    .padding()
                     .buttonStyle(NewAppointmentButtonStyle())
                     .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
                 }
@@ -59,6 +63,15 @@ struct AppointmentsList: View {
         }
         .task {
             await viewModel.loadAppointments(token: token)
+        }
+        .sheet(isPresented: $isShowingNewAppointment) {
+            VStack(spacing: Constants.l) {
+                Text("New appointment")
+                    .font(.title)
+                    .bold()
+                Text("Nothing here yet!")
+                    .presentationDetents([.medium])
+            }
         }
     }
 

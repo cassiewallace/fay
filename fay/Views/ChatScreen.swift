@@ -10,8 +10,9 @@ import SwiftUI
 struct ChatScreen: View {
     var body: some View {
         NavigationStack {
-            Color.background.primary
-                .ignoresSafeArea()
+            ContentUnavailableView(Copy.Chat.empty, image: "icon-chats")
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.background.primary.ignoresSafeArea())
                 .navigationTitle(Copy.Tabs.chat)
                 .navigationBarTitleDisplayMode(.large)
         }

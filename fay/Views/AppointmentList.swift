@@ -1,5 +1,5 @@
 //
-//  AppointmentsList.swift
+//  AppointmentList.swift
 //  fay
 //
 //  Created by Cassie Wallace on 3/18/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppointmentsList: View {
+struct AppointmentList: View {
     let token: String
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -37,9 +37,12 @@ struct AppointmentsList: View {
             VStack(spacing: 0) {
                 tabPicker
                 
-                if viewModel.isLoading {
+                switch viewModel.state {
+                case .idle, .loading:
                     loadingView
-                } else {
+                case .error(let message):
+                    errorView(message: message)
+                case .loaded:
                     pagedContent
                 }
             }
@@ -54,9 +57,10 @@ struct AppointmentsList: View {
                     } label: {
                         Label(Copy.Appointments.newButton, image: "icon-add")
                             .labelStyle(.titleAndIcon)
+                            .font(.subheadline.weight(.medium))
+                            .foregroundStyle(.primary)
                     }
                     .padding()
-                    .buttonStyle(NewAppointmentButtonStyle())
                     .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
                 }
             }
@@ -127,7 +131,10 @@ struct AppointmentsList: View {
 
         return Group {
             if appointments.isEmpty {
-                emptyView(for: tab)
+                ContentUnavailableView(
+                    tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast,
+                    image: "icon-calendar"
+                )
             } else {
                 ScrollView {
                     VStack(spacing: Constants.l) {
@@ -148,40 +155,35 @@ struct AppointmentsList: View {
         }
     }
 
-    private func emptyView(for tab: AppointmentTab) -> some View {
-        VStack(spacing: Constants.m) {
-            Spacer()
-            Image("icon-calendar")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 48, height: 48)
-                .foregroundStyle(.secondary)
-                .accessibilityHidden(true)
-            Text(tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Spacer()
-        }
-    }
-
     private var loadingView: some View {
         VStack {
             Spacer()
             ProgressView()
                 .scaleEffect(1.2)
+                .accessibilityLabel(Copy.Appointments.loading)
             Spacer()
         }
     }
-}
 
-// MARK: - New Appointment Button Style
-
-private struct NewAppointmentButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.subheadline.weight(.medium))
-            .foregroundStyle(.primary)
-            .opacity(configuration.isPressed ? 0.5 : 1)
+    private func errorView(message: String) -> some View {
+        VStack(spacing: Constants.m) {
+            Spacer()
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 48))
+                .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+            Text(message)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+            Button(Copy.Appointments.retryButton) {
+                Task { await viewModel.loadAppointments(token: token) }
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.accentFill.primary)
+            Spacer()
+        }
     }
 }
 
@@ -189,42 +191,50 @@ private struct NewAppointmentButtonStyle: ButtonStyle {
 
 #Preview("Upcoming") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
-    vm.appointments = [.previewUpcoming1, .previewUpcoming2, .previewUpcoming3]
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    vm.state = .loaded([.previewUpcoming1, .previewUpcoming2, .previewUpcoming3])
+    return AppointmentList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 #Preview("Past") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
-    vm.appointments = [.previewPast1, .previewPast2]
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    vm.state = .loaded([.previewPast1, .previewPast2])
+    return AppointmentList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
         .withSelectedTab(.past)
 }
 
 #Preview("Empty — Upcoming") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    vm.state = .loaded([])
+    return AppointmentList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 #Preview("Loading") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
-    vm.isLoading = true
-    return AppointmentsList(token: "preview", client: MockHTTPClient())
+    vm.state = .loading
+    return AppointmentList(token: "preview", client: MockHTTPClient())
+        .withViewModel(vm)
+}
+
+#Preview("Error") {
+    let vm = AppointmentsViewModel(client: MockHTTPClient())
+    vm.state = .error(Copy.Errors.generic)
+    return AppointmentList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 // MARK: - Preview Helpers
 
-private extension AppointmentsList {
-    func withViewModel(_ vm: AppointmentsViewModel) -> AppointmentsList {
+private extension AppointmentList {
+    func withViewModel(_ vm: AppointmentsViewModel) -> AppointmentList {
         let copy = self
         copy.viewModel = vm
         return copy
     }
 
-    func withSelectedTab(_ tab: AppointmentTab) -> AppointmentsList {
+    func withSelectedTab(_ tab: AppointmentTab) -> AppointmentList {
         let copy = self
         copy.selectedTab = tab
         return copy

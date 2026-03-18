@@ -28,15 +28,31 @@ struct LoginScreen: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.xxl) {
-                headerSection
-                formSection
+        Group {
+            switch viewModel.state {
+            case .loading:
+                loadingView
+            case .idle, .loaded, .error:
+                ScrollView {
+                    VStack(spacing: Constants.xxl) {
+                        headerSection
+                        formSection
+                    }
+                    .padding(.horizontal, Constants.xl)
+                }
             }
-            .padding(.horizontal, Constants.xl)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background.primary.ignoresSafeArea())
+    }
+
+    private var loadingView: some View {
+        VStack {
+            Spacer()
+            ProgressView()
+                .scaleEffect(1.2)
+            Spacer()
+        }
     }
 
     private var headerSection: some View {
@@ -53,8 +69,11 @@ struct LoginScreen: View {
 
     private var formSection: some View {
         VStack(spacing: Constants.l) {
-            if let errorMessage = viewModel.errorMessage {
-                errorBanner(message: errorMessage)
+            switch viewModel.state {
+            case .error(let message):
+                errorBanner(message: message)
+            case .idle, .loading, .loaded:
+                EmptyView()
             }
 
             TextField(Copy.Login.emailPlaceholder, text: $username)
@@ -79,7 +98,7 @@ struct LoginScreen: View {
                 .accessibilityLabel(Copy.Login.passwordPlaceholder)
 
             FayButton(copy: Copy.Login.signInButton, action: attemptSignIn)
-                .disabled(viewModel.isLoading || username.isEmpty || password.isEmpty)
+                .disabled(viewModel.state.isLoading || username.isEmpty || password.isEmpty)
         }
     }
 
@@ -122,14 +141,14 @@ struct LoginScreen: View {
 
 #Preview("Loading") {
     let vm = AuthViewModel(client: MockHTTPClient())
-    vm.isLoading = true
+    vm.state = .loading
     return LoginScreen(client: MockHTTPClient(), onSignedIn: { _ in })
         .withViewModel(vm)
 }
 
 #Preview("Error") {
     let vm = AuthViewModel(client: MockHTTPClient())
-    vm.errorMessage = Copy.Errors.unauthorized
+    vm.state = .error(Copy.Errors.unauthorized)
     return LoginScreen(client: MockHTTPClient(), onSignedIn: { _ in })
         .withViewModel(vm)
 }

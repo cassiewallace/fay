@@ -26,6 +26,8 @@ enum Copy {
         static let joinButton = String(localized: "appointments.join.button", defaultValue: "Join appointment")
         static let emptyUpcoming = String(localized: "appointments.empty.upcoming", defaultValue: "No upcoming appointments")
         static let emptyPast = String(localized: "appointments.empty.past", defaultValue: "No past appointments")
+        static let retryButton = String(localized: "appointments.retry.button", defaultValue: "Try Again")
+        static let loading = String(localized: "appointments.loading", defaultValue: "Loading appointments")
         static let providerName = String(localized: "appointments.provider.name", defaultValue: "Jane Williams, RD")
     }
 
@@ -38,6 +40,14 @@ enum Copy {
         static let chat = String(localized: "tab.chat", defaultValue: "Chat")
         static let journal = String(localized: "tab.journal", defaultValue: "Journal")
         static let profile = String(localized: "tab.profile", defaultValue: "Profile")
+    }
+
+    enum Chat {
+        static let empty = String(localized: "chat.empty", defaultValue: "No messages yet")
+    }
+
+    enum Journal {
+        static let empty = String(localized: "journal.empty", defaultValue: "No journal entries yet")
     }
 
     enum Errors {

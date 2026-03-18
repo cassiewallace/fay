@@ -20,31 +20,30 @@ final class AppointmentsViewModel {
 
     // MARK: - Public
 
-    var appointments: [Appointment] = []
-    var isLoading = false
-    var errorMessage: String?
+    var state: ViewState<[Appointment]> = .loading
 
     var upcomingAppointments: [Appointment] {
-        appointments
+        guard case .loaded(let appointments) = state else { return [] }
+        return appointments
             .filter { $0.start >= .now }
             .sorted { $0.start < $1.start }
     }
 
     var pastAppointments: [Appointment] {
-        appointments
+        guard case .loaded(let appointments) = state else { return [] }
+        return appointments
             .filter { $0.start < .now }
             .sorted { $0.start > $1.start }
     }
 
     func loadAppointments(token: String) async {
-        isLoading = true
-        errorMessage = nil
-        defer { isLoading = false }
+        state = .loading
 
         do {
-            appointments = try await client.fetchAppointments(token: token)
+            let appointments = try await client.fetchAppointments(token: token)
+            state = .loaded(appointments)
         } catch {
-            errorMessage = error.localizedDescription
+            state = .error(error.localizedDescription)
         }
     }
 

@@ -20,19 +20,17 @@ final class AuthViewModel {
 
     // MARK: - Public
 
-    var isLoading = false
-    var errorMessage: String?
+    var state: ViewState<Void> = .idle
 
     func signIn(username: String, password: String) async -> String? {
-        isLoading = true
-        errorMessage = nil
-        defer { isLoading = false }
+        state = .loading
 
         do {
             let token = try await client.signIn(username: username, password: password)
+            state = .idle
             return token
         } catch {
-            errorMessage = error.localizedDescription
+            state = .error(error.localizedDescription)
             return nil
         }
     }

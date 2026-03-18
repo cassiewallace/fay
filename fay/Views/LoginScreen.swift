@@ -28,77 +28,79 @@ struct LoginScreen: View {
     }
 
     var body: some View {
-        Group {
-            switch viewModel.state {
-            case .loading:
-                loadingView
-            case .idle, .loaded, .error:
-                ScrollView {
-                    VStack(spacing: Constants.xxl) {
-                        headerSection
-                        formSection
-                    }
-                    .padding(.horizontal, Constants.xl)
-                }
+        GeometryReader { geometry in
+            ZStack(alignment: .bottom) {
+                Image("LoginBackground")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: geometry.size.width, height: geometry.size.height)
+                    .clipped()
+                    .ignoresSafeArea()
+
+                loginCard
+                    .frame(width: geometry.size.width)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background.primary.ignoresSafeArea())
     }
 
-    private var loadingView: some View {
-        VStack {
-            Spacer()
-            ProgressView()
-                .scaleEffect(1.2)
-            Spacer()
-        }
-    }
-
-    private var headerSection: some View {
-        VStack(spacing: Constants.s) {
-            Text(Copy.Login.screenTitle)
-                .font(.largeTitle.bold())
-                .frame(maxWidth: .infinity, alignment: .leading)
-            Text(Copy.Login.screenSubtitle)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
+    private var loginCard: some View {
+        formSection
+            .padding(.horizontal, Constants.xl)
+            .padding(.vertical, Constants.xxl)
+            .frame(maxWidth: .infinity)
+            .background(Color.white)
+            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
+            .ignoresSafeArea(edges: .bottom)
     }
 
     private var formSection: some View {
         VStack(spacing: Constants.l) {
-            switch viewModel.state {
-            case .error(let message):
+            if case .error(let message) = viewModel.state {
                 errorBanner(message: message)
-            case .idle, .loading, .loaded:
-                EmptyView()
             }
 
-            TextField(Copy.Login.emailPlaceholder, text: $username)
-                .textContentType(.emailAddress)
-                .keyboardType(.emailAddress)
-                .textInputAutocapitalization(.never)
-                .autocorrectionDisabled()
-                .focused($focusedField, equals: .username)
-                .onSubmit { focusedField = .password }
-                .padding(Constants.l)
-                .background(Color.background.card)
-                .clipShape(.rect(cornerRadius: Constants.m))
-                .accessibilityLabel(Copy.Login.emailPlaceholder)
+            VStack(alignment: .leading, spacing: Constants.s) {
+                Text(Copy.Login.usernameTitle)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(Color.foreground.primary)
+                TextField(Copy.Login.usernamePlaceholder, text: $username)
+                    .textContentType(.username)
+                    .keyboardType(.default)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .username)
+                    .onSubmit { focusedField = .password }
+                    .padding(Constants.l)
+                    .background(Color.background.card)
+                    .clipShape(.rect(cornerRadius: Constants.l))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Constants.l)
+                            .strokeBorder(Color.border.default, lineWidth: 1)
+                    )
+                    .accessibilityLabel(Copy.Login.usernameTitle)
+            }
 
-            SecureField(Copy.Login.passwordPlaceholder, text: $password)
-                .textContentType(.password)
-                .focused($focusedField, equals: .password)
-                .onSubmit(attemptSignIn)
-                .padding(Constants.l)
-                .background(Color.background.card)
-                .clipShape(.rect(cornerRadius: Constants.m))
-                .accessibilityLabel(Copy.Login.passwordPlaceholder)
+            VStack(alignment: .leading, spacing: Constants.s) {
+                Text(Copy.Login.passwordTitle)
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(Color.foreground.primary)
+                SecureField(Copy.Login.passwordPlaceholder, text: $password)
+                    .textContentType(.password)
+                    .focused($focusedField, equals: .password)
+                    .onSubmit(attemptSignIn)
+                    .padding(Constants.l)
+                    .background(Color.background.card)
+                    .clipShape(.rect(cornerRadius: Constants.l))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: Constants.l)
+                            .strokeBorder(Color.border.default, lineWidth: 1)
+                    )
+                    .accessibilityLabel(Copy.Login.passwordTitle)
+            }
 
-            FayButton(copy: Copy.Login.signInButton, action: attemptSignIn)
-                .disabled(viewModel.state.isLoading || username.isEmpty || password.isEmpty)
+            FayButton(copy: Copy.Login.signInButton, action: attemptSignIn, isLoading: viewModel.state.isLoading)
+                .disabled(username.isEmpty || password.isEmpty)
         }
     }
 
@@ -137,13 +139,6 @@ struct LoginScreen: View {
 
 #Preview("Default") {
     LoginScreen(client: MockHTTPClient()) { _ in }
-}
-
-#Preview("Loading") {
-    let vm = AuthViewModel(client: MockHTTPClient())
-    vm.state = .loading
-    return LoginScreen(client: MockHTTPClient(), onSignedIn: { _ in })
-        .withViewModel(vm)
 }
 
 #Preview("Error") {

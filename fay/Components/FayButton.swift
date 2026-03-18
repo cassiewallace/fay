@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Primary action button with optional leading icon.
+/// Primary action button with optional leading icon and loading state.
 struct FayButton: View {
     /// Optional icon shown before the label.
     let icon: Image?
@@ -15,31 +15,43 @@ struct FayButton: View {
     let copy: String
     /// Action to perform on tap.
     let action: (() -> ())?
-    
-    init(icon: Image? = nil, copy: String, action: (() -> Void)? = nil) {
+    /// When true, shows a spinner instead of the label.
+    let isLoading: Bool
+
+    init(icon: Image? = nil, copy: String, action: (() -> Void)? = nil, isLoading: Bool = false) {
         self.icon = icon
         self.copy = copy
         self.action = action
+        self.isLoading = isLoading
     }
-    
+
     var body: some View {
         Button {
-            if let action {
+            if !isLoading, let action {
                 action()
             }
         } label: {
-            HStack(spacing: Constants.s) {
-                if let icon {
-                    icon
-                        .accessibilityHidden(true)
+            Group {
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .tint(.white)
+                } else {
+                    HStack(spacing: Constants.s) {
+                        if let icon {
+                            icon
+                                .accessibilityHidden(true)
+                        }
+                        Text(copy)
+                            .font(.subheadline.weight(.semibold))
+                    }
                 }
-                Text(copy)
-                    .font(.subheadline.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
             .frame(height: 44)
             .padding(Constants.s)
         }
+        .disabled(isLoading)
         .foregroundStyle(.white)
         .background(Color.accentFill.primary)
         .clipShape(.rect(cornerRadius: Constants.s))

@@ -9,9 +9,11 @@ import Foundation
 
 enum Copy {
     enum Login {
-        static let emailPlaceholder = String(localized: "login.email.placeholder", defaultValue: "Email")
-        static let passwordPlaceholder = String(localized: "login.password.placeholder", defaultValue: "Password")
-        static let signInButton = String(localized: "login.sign_in.button", defaultValue: "Sign In")
+        static let usernameTitle = String(localized: "login.username.title", defaultValue: "Username")
+        static let passwordTitle = String(localized: "login.password.title", defaultValue: "Password")
+        static let usernamePlaceholder = String(localized: "login.username.placeholder", defaultValue: "Enter username")
+        static let passwordPlaceholder = String(localized: "login.password.placeholder", defaultValue: "Enter password")
+        static let signInButton = String(localized: "login.sign_in.button", defaultValue: "Log in")
         static let errorTitle = String(localized: "login.error.title", defaultValue: "Sign in failed")
         static let screenTitle = String(localized: "login.screen.title", defaultValue: "Welcome back")
         static let screenSubtitle = String(localized: "login.screen.subtitle", defaultValue: "Sign in to your account")

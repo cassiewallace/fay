@@ -24,7 +24,6 @@ final class AuthViewModel {
 
     func signIn(username: String, password: String) async -> String? {
         state = .loading
-
         do {
             let token = try await client.signIn(username: username, password: password)
             state = .idle

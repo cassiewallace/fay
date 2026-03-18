@@ -67,7 +67,9 @@ struct AppointmentsList: View {
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.foreground.primary)
                         .padding(.vertical, Constants.m)
-                        .padding(.horizontal, Constants.l)
+                        .padding(.horizontal, {
+                            if #available(iOS 26, *) { Constants.m } else { Constants.l }
+                        }())
                         .background {
                             if #unavailable(iOS 26) {
                                 RoundedRectangle(cornerRadius: Constants.s)
@@ -118,6 +120,7 @@ struct AppointmentsList: View {
                                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isSelected)
                         }
                     }
+                    .buttonStyle(.plain)
                     .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                 }
             }

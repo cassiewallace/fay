@@ -82,8 +82,8 @@ struct AppointmentsList: View {
                     .font(.title)
                     .bold()
                 Text(Copy.Appointments.newAppointmentSheetPlaceholder)
-                    .presentationDetents([.medium])
             }
+            .presentationDetents([.medium])
         }
     }
 

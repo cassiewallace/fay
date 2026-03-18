@@ -9,7 +9,8 @@ import SwiftUI
 
 /// Card displaying a single appointment with date, type, and optional join button.
 struct AppointmentCard: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    // MARK: - Lifecycle
 
     /// The appointment to display.
     let appointment: Appointment
@@ -48,7 +49,7 @@ struct AppointmentCard: View {
                           copy: Copy.Appointments.joinButton)
             }
         }
-        .padding(isWithinJoinWindow ? 20 : Constants.l)
+        .padding(isWithinJoinWindow ? Constants.l + Constants.xs : Constants.l)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.background.card)
         .clipShape(.rect(cornerRadius: Constants.l))

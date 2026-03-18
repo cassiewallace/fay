@@ -141,23 +141,6 @@ struct LoginScreen: View {
 
 // MARK: - Previews
 
-#Preview("Default") {
+#Preview {
     LoginScreen { _ in }
-}
-
-#Preview("Error") {
-    let vm = AuthViewModel()
-    vm.state = .error(Copy.Errors.unauthorized)
-    return LoginScreen(onSignedIn: { _ in })
-        .withViewModel(vm)
-}
-
-// MARK: - Preview Helper
-
-private extension LoginScreen {
-    func withViewModel(_ vm: AuthViewModel) -> LoginScreen {
-        var copy = self
-        copy.viewModel = vm
-        return copy
-    }
 }

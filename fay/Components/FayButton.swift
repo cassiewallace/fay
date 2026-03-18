@@ -48,13 +48,13 @@ struct FayButton: View {
                                 .accessibilityHidden(true)
                         }
                         Text(copy)
-                            .font(.subheadline.weight(.semibold))
+                            .font(.system(size: 14, weight: .semibold))
                     }
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 44)
-            .padding(Constants.s)
+            .padding(.vertical, Constants.m)
+            .padding(.horizontal, Constants.s)
         }
         .disabled(isLoading)
         .foregroundStyle(.white)

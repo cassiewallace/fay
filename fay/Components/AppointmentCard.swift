@@ -38,7 +38,7 @@ struct AppointmentCard: View {
 
     private var cardContent: some View {
         VStack(alignment: .leading, spacing: Constants.m) {
-            HStack(alignment: .center, spacing: Constants.l) {
+            HStack(alignment: .center, spacing: Constants.m) {
                 CalendarIcon(date: appointment.start, variant: isPast ? .past : .upcoming)
                 appointmentInfo
             }
@@ -61,12 +61,12 @@ struct AppointmentCard: View {
     }
 
     private var appointmentInfo: some View {
-        VStack(alignment: .leading, spacing: Constants.s) {
+        VStack(alignment: .leading, spacing: Constants.xs) {
             Text(timeText)
-                .font(.body.weight(.semibold))
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.primary)
             Text("\(appointment.appointmentType) with \(Copy.Appointments.providerName)")
-                .font(.caption)
+                .font(.system(size: 12))
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

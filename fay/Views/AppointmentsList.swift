@@ -60,10 +60,12 @@ struct AppointmentsList: View {
                     Button {
                         isShowingNewAppointment = true
                     } label: {
-                        Label(Copy.Appointments.newButton, image: "icon-add")
-                            .labelStyle(.titleAndIcon)
-                            .font(.subheadline.weight(.medium))
-                            .foregroundStyle(.primary)
+                        HStack(spacing: Constants.s) {
+                            Image("icon-add")
+                            Text(Copy.Appointments.newButton)
+                        }
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.primary)
                     }
                     .padding()
                     .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
@@ -105,10 +107,10 @@ struct AppointmentsList: View {
                             }
                         } label: {
                             Text(tab.label)
-                                .font(.subheadline.weight(isSelected ? .semibold : .regular))
+                                .font(.subheadline.weight(.medium))
                                 .foregroundStyle(isSelected ? Color.accentFill.primary : .secondary)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, 10)
+                                .padding(.vertical, Constants.l)
                         }
                         .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                     }
@@ -122,6 +124,7 @@ struct AppointmentsList: View {
             }
         }
         .frame(height: 44)
+        .background(Color.background.primary)
     }
 
     private var pagedContent: some View {

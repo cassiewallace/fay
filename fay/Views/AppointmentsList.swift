@@ -65,7 +65,7 @@ struct AppointmentsList: View {
                             Text(Copy.Appointments.newButton)
                         }
                         .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(Color.foreground.primary)
                     }
                     .padding()
                     .accessibilityLabel(Copy.Appointments.newButtonAccessibility)

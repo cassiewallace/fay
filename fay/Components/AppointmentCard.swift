@@ -9,26 +9,22 @@ import SwiftUI
 
 /// Card displaying a single appointment with date, type, and optional join button.
 struct AppointmentCard: View {
-    private enum Layout {
-        static let shadowRadius: CGFloat = 12
-        static let shadowY: CGFloat = 4
-        static let cardPaddingProminent: CGFloat = 20
-    }
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     /// The appointment to display.
     let appointment: Appointment
-    /// When true, shows glass/shadow styling and the join button.
-    let isInProgress: Bool
+    /// When true, appointment is in progress or starts within 10 minutes; shows glass/shadow styling and join button.
+    let isWithinJoinWindow: Bool
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    // MARK: - Body
 
     var body: some View {
-        if isInProgress, #available(iOS 26, *) {
+        if isWithinJoinWindow, #available(iOS 26, *) {
             cardContent
                 .glassEffect(.regular, in: .rect(cornerRadius: Constants.l))
-        } else if isInProgress {
+        } else if isWithinJoinWindow {
             cardContent
-                .shadow(radius: Layout.shadowRadius, x: 0, y: Layout.shadowY)
+                .shadow(radius: 12, x: 0, y: 4)
         } else {
             cardContent
                 .overlay(
@@ -38,6 +34,8 @@ struct AppointmentCard: View {
         }
     }
 
+    // MARK: - Private
+
     private var cardContent: some View {
         VStack(alignment: .leading, spacing: Constants.m) {
             HStack(alignment: .center, spacing: Constants.l) {
@@ -45,12 +43,12 @@ struct AppointmentCard: View {
                 appointmentInfo
             }
 
-            if isInProgress {
+            if isWithinJoinWindow {
                 FayButton(icon: Image("icon-video-camera"),
                           copy: Copy.Appointments.joinButton)
             }
         }
-        .padding(isInProgress ? Layout.cardPaddingProminent : Constants.l)
+        .padding(isWithinJoinWindow ? 20 : Constants.l)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.background.white)
         .clipShape(.rect(cornerRadius: Constants.l))
@@ -75,7 +73,7 @@ struct AppointmentCard: View {
     }
 
     private var timeText: String {
-        if isInProgress {
+        if isWithinJoinWindow {
             // Expanded format for the current appointment: "11:00 AM - 12:00 PM (PDT)"
             let style = Date.FormatStyle().hour().minute().locale(.autoupdatingCurrent)
             let start = appointment.start.formatted(style)
@@ -101,7 +99,7 @@ struct AppointmentCard: View {
         let startTime = appointment.start.formatted(timeStyle)
         let type = "\(appointment.appointmentType) with \(Copy.Appointments.providerName)"
 
-        if isInProgress {
+        if isWithinJoinWindow {
             let endTime = appointment.end.formatted(timeStyle)
             let tz = appointment.start.formatted(
                 .dateTime.timeZone(.specificName(.long)).locale(.autoupdatingCurrent)
@@ -117,8 +115,8 @@ struct AppointmentCard: View {
 
 #Preview {
     VStack {
-        AppointmentCard(appointment: .previewUpcoming1, isInProgress: true)
-        AppointmentCard(appointment: .previewUpcoming2, isInProgress: false)
-        AppointmentCard(appointment: .previewPast1, isInProgress: false)
+        AppointmentCard(appointment: .previewUpcoming1, isWithinJoinWindow: true)
+        AppointmentCard(appointment: .previewUpcoming2, isWithinJoinWindow: false)
+        AppointmentCard(appointment: .previewPast1, isWithinJoinWindow: false)
     }
 }

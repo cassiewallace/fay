@@ -20,6 +20,14 @@ struct Appointment: Codable, Identifiable {
     let durationInMinutes: Int
     let recurrenceType: String
 
+    /// True if the appointment is in progress or starts within the next 10 minutes.
+    func isWithinJoinWindow(now: Date = .now, windowMinutes: Int = 10) -> Bool {
+        let windowEnd = now.addingTimeInterval(TimeInterval(windowMinutes * 60))
+        let inProgress = now >= start && now <= end
+        let startsWithinWindow = start > now && start <= windowEnd
+        return inProgress || startsWithinWindow
+    }
+
     enum CodingKeys: String, CodingKey {
         case id = "appointment_id"
         case patientID = "patient_id"

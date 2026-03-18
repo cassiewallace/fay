@@ -139,13 +139,10 @@ struct AppointmentsList: View {
             } else {
                 ScrollView {
                     VStack(spacing: Constants.l) {
-                        ForEach(
-                            Array(appointments.enumerated()),
-                            id: \.element.id
-                        ) { index, appointment in
+                        ForEach(appointments, id: \.id) { appointment in
                             AppointmentCard(
                                 appointment: appointment,
-                                isInProgress: tab == .upcoming && index == 0
+                                isWithinJoinWindow: appointment.isWithinJoinWindow()
                             )
                         }
                     }

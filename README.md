@@ -15,6 +15,7 @@ A healthcare appointment app for iOS (17.0+), built with SwiftUI.
 - **Localization:** All user-facing strings run through `String(localized:)` backed by a `Copy` enum and String Catalog (`Localizable.xcstrings`) for future localization
 - **New Appointment:** Lives in the toolbar, enabling consistent placement and styling across deployment targets and leveraging the latest standards for iOS 26 with Liquid Glass
 - **Dark mode:** All semantic color tokens define both light and dark variants in the asset catalog. System colors (`.primary`, `.secondary`) are used where possible to adapt automatically.
+- **Accessibility:** Core practices are applied throughout: semantic accessibility labels (including VoiceOver-friendly card descriptions), Reduce Motion support, minimum 44pt touch targets, and system colors for contrast. Dynamic Type support could be further refined — notably, `CalendarIcon` uses fixed font sizes and a fixed frame that would clip at the largest accessibility sizes, and the tab picker has a fixed height. A production app would address these with scalable text styles and flexible layouts.
 - **Attribution:** Login screen photo by [Airam Dato-on](https://unsplash.com/@airamdphoto?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/woman-in-gray-button-up-shirt-holding-white-ceramic-mug-T90gWliuCQQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
 
 ## Planning

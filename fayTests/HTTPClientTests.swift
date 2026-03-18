@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import fay
 
-@Suite("HTTPClient")
+@Suite("HTTPClient", .serialized)
 struct HTTPClientTests {
     private let baseURL = URL(string: "https://node-api-for-candidates.onrender.com")!
 
@@ -31,15 +31,15 @@ struct HTTPClientTests {
 
     // MARK: - signIn
 
+    // MARK: - signIn
+
     @Test("signIn returns token on 200")
     func signIn_success_returnsToken() async throws {
         let client = makeClient()
         let expectedToken = "test-jwt-token"
         let responseData = try JSONEncoder().encode(["token": expectedToken])
-
-        MockURLProtocol.requestHandler = { [makeResponse] _ in
-            (makeResponse(200), responseData)
-        }
+        MockURLProtocol.requestHandler = { _ in (self.makeResponse(statusCode: 200), responseData) }
+        defer { MockURLProtocol.requestHandler = nil }
 
         let token = try await client.signIn(username: "john", password: "12345")
         #expect(token == expectedToken)
@@ -48,10 +48,8 @@ struct HTTPClientTests {
     @Test("signIn throws unauthorized on 401")
     func signIn_unauthorized_throwsError() async throws {
         let client = makeClient()
-
-        MockURLProtocol.requestHandler = { [makeResponse] _ in
-            (makeResponse(401), Data())
-        }
+        MockURLProtocol.requestHandler = { _ in (self.makeResponse(statusCode: 401), Data()) }
+        defer { MockURLProtocol.requestHandler = nil }
 
         await #expect(throws: HTTPClientError.unauthorized) {
             try await client.signIn(username: "wrong", password: "wrong")
@@ -81,10 +79,8 @@ struct HTTPClientTests {
         }
         """
         let responseData = Data(json.utf8)
-
-        MockURLProtocol.requestHandler = { [makeResponse] _ in
-            (makeResponse(200), responseData)
-        }
+        MockURLProtocol.requestHandler = { _ in (self.makeResponse(statusCode: 200), responseData) }
+        defer { MockURLProtocol.requestHandler = nil }
 
         let appointments = try await client.fetchAppointments(token: "valid-token")
         #expect(appointments.count == 1)
@@ -95,10 +91,8 @@ struct HTTPClientTests {
     @Test("fetchAppointments throws unauthorized on 401")
     func fetchAppointments_unauthorized_throwsError() async throws {
         let client = makeClient()
-
-        MockURLProtocol.requestHandler = { [makeResponse] _ in
-            (makeResponse(401), Data())
-        }
+        MockURLProtocol.requestHandler = { _ in (self.makeResponse(statusCode: 401), Data()) }
+        defer { MockURLProtocol.requestHandler = nil }
 
         await #expect(throws: HTTPClientError.unauthorized) {
             try await client.fetchAppointments(token: "expired-token")
@@ -109,10 +103,8 @@ struct HTTPClientTests {
     func fetchAppointments_malformedJSON_throwsDecodingError() async throws {
         let client = makeClient()
         let malformedData = Data(#"{"appointments": "not an array"}"#.utf8)
-
-        MockURLProtocol.requestHandler = { [makeResponse] _ in
-            (makeResponse(200), malformedData)
-        }
+        MockURLProtocol.requestHandler = { _ in (self.makeResponse(statusCode: 200), malformedData) }
+        defer { MockURLProtocol.requestHandler = nil }
 
         await #expect(throws: (any Error).self) {
             try await client.fetchAppointments(token: "valid-token")

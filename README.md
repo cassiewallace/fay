@@ -1,6 +1,6 @@
 # Fay
 
-An appointment app for iOS (17.0+), built with SwiftUI.
+An appointment app for iOS built with SwiftUI.
 
 ## Demo
 

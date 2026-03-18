@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - HTTPClientError
 
-enum HTTPClientError: Error, LocalizedError {
+enum HTTPClientError: Error, LocalizedError, Equatable {
     case unauthorized
     case invalidResponse
     case serverError(statusCode: Int)

@@ -252,7 +252,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Password"
+            "value" : "Enter password"
           }
         }
       }

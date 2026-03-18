@@ -58,9 +58,11 @@ struct LoginScreen: View {
             .padding(.horizontal, Constants.xl)
             .padding(.vertical, Constants.xxl)
             .frame(maxWidth: .infinity)
-            .background(Color.white)
-            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
-            .ignoresSafeArea(edges: .bottom)
+            .background(
+                Color.background.card
+                    .clipShape(UnevenRoundedRectangle(topLeadingRadius: 24, bottomLeadingRadius: 0, bottomTrailingRadius: 0, topTrailingRadius: 24))
+                    .ignoresSafeArea(edges: .bottom)
+            )
     }
 
     private var formSection: some View {
@@ -72,7 +74,7 @@ struct LoginScreen: View {
             VStack(alignment: .leading, spacing: Constants.s) {
                 Text(Copy.Login.usernameTitle)
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Color.foreground.primary)
+                    .foregroundStyle(.primary)
                 TextField(Copy.Login.usernamePlaceholder, text: $username)
                     .textContentType(.username)
                     .keyboardType(.default)
@@ -93,7 +95,7 @@ struct LoginScreen: View {
             VStack(alignment: .leading, spacing: Constants.s) {
                 Text(Copy.Login.passwordTitle)
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(Color.foreground.primary)
+                    .foregroundStyle(.primary)
                 SecureField(Copy.Login.passwordPlaceholder, text: $password)
                     .textContentType(.password)
                     .focused($focusedField, equals: .password)

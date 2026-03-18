@@ -24,6 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08CF4EA44A3A431C8577E2DC /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		654D5DB02F6AFD5A0065C4F2 /* fay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		654D5DBD2F6AFD5B0065C4F2 /* fayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		654D5DC72F6AFD5B0065C4F2 /* fayUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +76,7 @@
 		654D5DA72F6AFD5A0065C4F2 = {
 			isa = PBXGroup;
 			children = (
+				08CF4EA44A3A431C8577E2DC /* README.md */,
 				654D5DB22F6AFD5A0065C4F2 /* fay */,
 				654D5DC02F6AFD5B0065C4F2 /* fayTests */,
 				654D5DCA2F6AFD5B0065C4F2 /* fayUITests */,

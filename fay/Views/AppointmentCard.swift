@@ -101,34 +101,31 @@ struct AppointmentCard: View {
     }
 
     private var timeRangeText: String {
-        let start = appointment.start.formatted(
-            .dateTime.hour().minute().timeZone(.specificName(.short)).locale(.autoupdatingCurrent)
+        let style = Date.FormatStyle()
+            .hour()
+            .minute()
+            .locale(.autoupdatingCurrent)
+        let start = appointment.start.formatted(style)
+        let end = appointment.end.formatted(style)
+        // specificName gives DST-aware abbreviation (e.g. PDT vs PST), shown once at the end
+        let tz = appointment.start.formatted(
+            .dateTime.timeZone(.specificName(.short)).locale(.autoupdatingCurrent)
         )
-        let end = appointment.end.formatted(
-            .dateTime.hour().minute().timeZone(.specificName(.short)).locale(.autoupdatingCurrent)
-        )
-        return "\(start) - \(end)"
+        return "\(start) - \(end) (\(tz))"
     }
 
     private var accessibilityLabel: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .long
-        dateFormatter.timeStyle = .none
-        dateFormatter.locale = .autoupdatingCurrent
-
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateStyle = .none
-        timeFormatter.timeStyle = .short
-        timeFormatter.locale = .autoupdatingCurrent
-        timeFormatter.timeZone = .current
-
-        let date = dateFormatter.string(from: appointment.start)
-        let startTime = timeFormatter.string(from: appointment.start)
-        let endTime = timeFormatter.string(from: appointment.end)
-        let tzName = TimeZone.current.localizedName(for: .standard, locale: .autoupdatingCurrent)
-            ?? TimeZone.current.identifier
-
-        return "\(date), \(startTime) to \(endTime) \(tzName), "
+        let date = appointment.start.formatted(
+            .dateTime.month(.wide).day().year().locale(.autoupdatingCurrent)
+        )
+        let timeStyle = Date.FormatStyle().hour().minute().locale(.autoupdatingCurrent)
+        let startTime = appointment.start.formatted(timeStyle)
+        let endTime = appointment.end.formatted(timeStyle)
+        // Use DST-aware specific name for the appointment's date, not today's offset
+        let tz = appointment.start.formatted(
+            .dateTime.timeZone(.specificName(.long)).locale(.autoupdatingCurrent)
+        )
+        return "\(date), \(startTime) to \(endTime), \(tz), "
             + "\(appointment.appointmentType) with \(Copy.Appointments.providerName)"
     }
 }

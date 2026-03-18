@@ -9,14 +9,8 @@ import CoreFoundation
 
 /// Core constants for spacing and layout.
 enum Constants {
-    /// 0pt
-    static let none: CGFloat = 0
-    /// 2pt
-    static let xxxs: CGFloat = 2
     /// 4pt
-    static let xxs: CGFloat = 4
-    /// 6pt
-    static let xs: CGFloat = 6
+    static let xs: CGFloat = 4
     /// 8pt
     static let s: CGFloat = 8
     /// 12pt
@@ -27,6 +21,6 @@ enum Constants {
     static let xl: CGFloat = 24
     /// 32pt
     static let xxl: CGFloat = 32
-    /// 64pt
+    /// 48pt
     static let xxxl: CGFloat = 48
 }

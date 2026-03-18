@@ -7,8 +7,17 @@
 
 import SwiftUI
 
+/// Card displaying a single appointment with date, type, and optional join button.
 struct AppointmentCard: View {
+    private enum Layout {
+        static let shadowRadius: CGFloat = 12
+        static let shadowY: CGFloat = 4
+        static let cardPaddingProminent: CGFloat = 20
+    }
+
+    /// The appointment to display.
     let appointment: Appointment
+    /// When true, shows glass/shadow styling and the join button.
     let isInProgress: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -19,7 +28,7 @@ struct AppointmentCard: View {
                 .glassEffect(.regular, in: .rect(cornerRadius: Constants.l))
         } else if isInProgress {
             cardContent
-                .shadow(radius: 12, x: 0, y: 4)
+                .shadow(radius: Layout.shadowRadius, x: 0, y: Layout.shadowY)
         } else {
             cardContent
                 .overlay(
@@ -41,7 +50,7 @@ struct AppointmentCard: View {
                           copy: Copy.Appointments.joinButton)
             }
         }
-        .padding(isInProgress ? 20 : Constants.l)
+        .padding(isInProgress ? Layout.cardPaddingProminent : Constants.l)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.background.white)
         .clipShape(.rect(cornerRadius: Constants.l))
@@ -54,7 +63,7 @@ struct AppointmentCard: View {
     }
 
     private var appointmentInfo: some View {
-        VStack(alignment: .leading, spacing: Constants.xs) {
+        VStack(alignment: .leading, spacing: Constants.s) {
             Text(timeText)
                 .font(.body.weight(.semibold))
                 .foregroundStyle(.primary)
@@ -63,16 +72,6 @@ struct AppointmentCard: View {
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private var monthText: String {
-        appointment.start
-            .formatted(.dateTime.month(.abbreviated).locale(.autoupdatingCurrent))
-            .uppercased()
-    }
-
-    private var dayText: String {
-        appointment.start.formatted(.dateTime.day().locale(.autoupdatingCurrent))
     }
 
     private var timeText: String {

@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Protocol
+
 protocol HTTPClientProtocol {
     func signIn(username: String, password: String) async throws -> String
     func fetchAppointments(token: String) async throws -> [Appointment]
@@ -29,10 +31,12 @@ enum HTTPClientError: Error, LocalizedError {
     }
 }
 
+// MARK: - Implementation
+
 struct HTTPClient: HTTPClientProtocol {
     static let shared = HTTPClient()
 
-    private let baseURL = URL(string: "https://node-api-for-candidates.onrender.com")!
+    private let baseURL = APIConstants.baseURL
     private let session: URLSession
 
     init(session: URLSession = .shared) {
@@ -40,7 +44,7 @@ struct HTTPClient: HTTPClientProtocol {
     }
 
     func signIn(username: String, password: String) async throws -> String {
-        let url = baseURL.appendingPathComponent("signin")
+        let url = baseURL.appendingPathComponent(APIConstants.signInPath)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -64,7 +68,7 @@ struct HTTPClient: HTTPClientProtocol {
     }
 
     func fetchAppointments(token: String) async throws -> [Appointment] {
-        let url = baseURL.appendingPathComponent("appointments")
+        let url = baseURL.appendingPathComponent(APIConstants.appointmentsPath)
         var request = URLRequest(url: url)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 

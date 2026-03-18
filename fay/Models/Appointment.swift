@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Appointment
+
 struct Appointment: Codable, Identifiable {
     let id: String
     let patientID: String

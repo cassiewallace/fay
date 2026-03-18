@@ -11,6 +11,7 @@ struct ChatScreen: View {
     var body: some View {
         NavigationStack {
             ContentUnavailableView(Copy.Chat.empty, image: "icon-chats")
+                .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.background.primary.ignoresSafeArea())
                 .navigationTitle(Copy.Tabs.chat)

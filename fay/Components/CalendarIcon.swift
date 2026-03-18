@@ -17,6 +17,12 @@ struct CalendarIcon: View {
     let day: Int
     let variant: Variant
 
+    private enum Layout {
+        static let monthFontSize: CGFloat = 12
+        static let dayFontSize: CGFloat = 18
+        static let monthDateFormat = "MMM"
+    }
+
     private let cornerRadius: CGFloat = Constants.s
     private let size: CGFloat = Constants.xxxl
 
@@ -24,7 +30,7 @@ struct CalendarIcon: View {
         let formatter = DateFormatter()
         formatter.calendar = calendar
         formatter.locale = locale
-        formatter.dateFormat = "MMM"
+        formatter.dateFormat = Layout.monthDateFormat
         self.month = formatter.string(from: date)
         self.day = calendar.component(.day, from: date)
         self.variant = variant
@@ -65,16 +71,16 @@ struct CalendarIcon: View {
 
             VStack(spacing: 0) {
                 Text(month.uppercased())
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: Layout.monthFontSize, weight: .semibold))
                     .foregroundStyle(monthForeground)
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, Constants.xxs)
+                    .padding(.vertical, Constants.xs)
                     .background(monthBackground)
 
                 Text("\(day)")
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(size: Layout.dayFontSize, weight: .medium))
                     .foregroundStyle(dayForeground)
-                    .padding(.vertical, Constants.xxxs)
+                    .padding(.vertical, Constants.xs)
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))

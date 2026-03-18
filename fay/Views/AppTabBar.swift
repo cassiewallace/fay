@@ -18,7 +18,7 @@ struct AppTabBar: View {
 
     var body: some View {
         TabView {
-            AppointmentList(token: token, client: client)
+            AppointmentsList(token: token, client: client)
                 .tabItem {
                     Label(Copy.Tabs.appointments, image: "icon-calendar")
                 }

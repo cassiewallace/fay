@@ -29,6 +29,8 @@ enum Copy {
         static let retryButton = String(localized: "appointments.retry.button", defaultValue: "Try Again")
         static let loading = String(localized: "appointments.loading", defaultValue: "Loading appointments")
         static let providerName = String(localized: "appointments.provider.name", defaultValue: "Jane Williams, RD")
+        static let newAppointmentSheetTitle = String(localized: "appointments.new.sheet.title", defaultValue: "New appointment")
+        static let newAppointmentSheetPlaceholder = String(localized: "appointments.new.sheet.placeholder", defaultValue: "Nothing here yet!")
     }
 
     enum Profile {

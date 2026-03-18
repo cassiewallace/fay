@@ -7,9 +7,13 @@
 
 import SwiftUI
 
+/// Primary action button with optional leading icon.
 struct FayButton: View {
+    /// Optional icon shown before the label.
     let icon: Image?
+    /// Button label text.
     let copy: String
+    /// Action to perform on tap.
     let action: (() -> ())?
     
     init(icon: Image? = nil, copy: String, action: (() -> Void)? = nil) {
@@ -34,7 +38,7 @@ struct FayButton: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 44)
-            .padding(Constants.xs)
+            .padding(Constants.s)
         }
         .foregroundStyle(.white)
         .background(Color.accentFill.primary)

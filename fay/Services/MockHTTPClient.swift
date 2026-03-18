@@ -16,7 +16,8 @@ struct MockHTTPClient: HTTPClientProtocol {
 
     func signIn(username: String, password: String) async throws -> String {
         try await simulatedDelay()
-        guard username == "john", password == "12345" else {
+        guard username == APIConstants.demoUsername,
+              password == APIConstants.demoPassword else {
             throw HTTPClientError.unauthorized
         }
         return "mock-jwt-token"

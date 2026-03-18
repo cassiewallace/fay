@@ -1,5 +1,5 @@
 //
-//  AppointmentList.swift
+//  AppointmentsList.swift
 //  fay
 //
 //  Created by Cassie Wallace on 3/18/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AppointmentList: View {
+struct AppointmentsList: View {
     let token: String
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -70,10 +70,10 @@ struct AppointmentList: View {
         }
         .sheet(isPresented: $isShowingNewAppointment) {
             VStack(spacing: Constants.l) {
-                Text("New appointment")
+                Text(Copy.Appointments.newAppointmentSheetTitle)
                     .font(.title)
                     .bold()
-                Text("Nothing here yet!")
+                Text(Copy.Appointments.newAppointmentSheetPlaceholder)
                     .presentationDetents([.medium])
             }
         }
@@ -108,7 +108,7 @@ struct AppointmentList: View {
 
                 Rectangle()
                     .fill(Color.accentFill.primary)
-                    .frame(width: tabWidth, height: Constants.xxxs)
+                    .frame(width: tabWidth, height: Constants.xs)
                     .offset(x: underlineX)
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: underlineX)
             }
@@ -135,6 +135,7 @@ struct AppointmentList: View {
                     tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast,
                     image: "icon-calendar"
                 )
+                .foregroundStyle(.secondary)
             } else {
                 ScrollView {
                     VStack(spacing: Constants.l) {
@@ -192,14 +193,14 @@ struct AppointmentList: View {
 #Preview("Upcoming") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
     vm.state = .loaded([.previewUpcoming1, .previewUpcoming2, .previewUpcoming3])
-    return AppointmentList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 #Preview("Past") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
     vm.state = .loaded([.previewPast1, .previewPast2])
-    return AppointmentList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
         .withSelectedTab(.past)
 }
@@ -207,35 +208,35 @@ struct AppointmentList: View {
 #Preview("Empty — Upcoming") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
     vm.state = .loaded([])
-    return AppointmentList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 #Preview("Loading") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
     vm.state = .loading
-    return AppointmentList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 #Preview("Error") {
     let vm = AppointmentsViewModel(client: MockHTTPClient())
     vm.state = .error(Copy.Errors.generic)
-    return AppointmentList(token: "preview", client: MockHTTPClient())
+    return AppointmentsList(token: "preview", client: MockHTTPClient())
         .withViewModel(vm)
 }
 
 // MARK: - Preview Helpers
 
-private extension AppointmentList {
-    func withViewModel(_ vm: AppointmentsViewModel) -> AppointmentList {
-        let copy = self
+private extension AppointmentsList {
+    func withViewModel(_ vm: AppointmentsViewModel) -> AppointmentsList {
+        var copy = self
         copy.viewModel = vm
         return copy
     }
 
-    func withSelectedTab(_ tab: AppointmentTab) -> AppointmentList {
-        let copy = self
+    func withSelectedTab(_ tab: AppointmentTab) -> AppointmentsList {
+        var copy = self
         copy.selectedTab = tab
         return copy
     }

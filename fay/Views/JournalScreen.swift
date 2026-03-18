@@ -11,6 +11,7 @@ struct JournalScreen: View {
     var body: some View {
         NavigationStack {
             ContentUnavailableView(Copy.Journal.empty, image: "icon-notebook")
+                .foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.background.primary.ignoresSafeArea())
                 .navigationTitle(Copy.Tabs.journal)

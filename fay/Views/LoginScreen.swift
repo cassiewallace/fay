@@ -107,7 +107,7 @@ struct LoginScreen: View {
             Image(systemName: "exclamationmark.circle.fill")
                 .foregroundStyle(.red)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: Constants.xxxs) {
+            VStack(alignment: .leading, spacing: Constants.xs) {
                 Text(Copy.Login.errorTitle)
                     .font(.subheadline.bold())
                 Text(message)
@@ -157,7 +157,7 @@ struct LoginScreen: View {
 
 private extension LoginScreen {
     func withViewModel(_ vm: AuthViewModel) -> LoginScreen {
-        let copy = self
+        var copy = self
         copy.viewModel = vm
         return copy
     }

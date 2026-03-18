@@ -66,8 +66,15 @@ struct AppointmentsList: View {
                         }
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(Color.foreground.primary)
+                        .padding(.vertical, Constants.m)
+                        .padding(.horizontal, Constants.l)
+                        .background {
+                            if #unavailable(iOS 26) {
+                                RoundedRectangle(cornerRadius: Constants.s)
+                                    .strokeBorder(Color.border.default, lineWidth: 1)
+                            }
+                        }
                     }
-                    .padding()
                     .accessibilityLabel(Copy.Appointments.newButtonAccessibility)
                 }
             }

@@ -33,28 +33,28 @@ struct CalendarIcon: View {
     private var outerFill: Color {
         switch variant {
         case .upcoming: Color.border.subtle
-        case .past: Color.fill.calendarPastBottom
+        case .past: Color.background.subtle
         }
     }
 
     private var monthBackground: Color {
         switch variant {
-        case .upcoming: Color.fill.accentSubtle
-        case .past: Color.fill.calendarPastTop
+        case .upcoming: Color.accentFill.subtle
+        case .past: Color.background.muted
         }
     }
 
     private var monthForeground: Color {
         switch variant {
-        case .upcoming: Color.content.onAccentSubtle
-        case .past: Color.content.calendarPast
+        case .upcoming: Color.accentFill.primary
+        case .past: Color.foreground.primary
         }
     }
 
     private var dayForeground: Color {
         switch variant {
         case .upcoming: Color.primary
-        case .past: Color.content.calendarPast
+        case .past: Color.foreground.primary
         }
     }
 

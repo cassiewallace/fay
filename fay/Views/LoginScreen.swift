@@ -36,7 +36,7 @@ struct LoginScreen: View {
             .padding(.horizontal, Constants.xl)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.surface.primary.ignoresSafeArea())
+        .background(Color.background.primary.ignoresSafeArea())
     }
 
     private var headerSection: some View {
@@ -65,7 +65,7 @@ struct LoginScreen: View {
                 .focused($focusedField, equals: .username)
                 .onSubmit { focusedField = .password }
                 .padding(Constants.l)
-                .background(Color.surface.card)
+                .background(Color.background.card)
                 .clipShape(.rect(cornerRadius: Constants.m))
                 .accessibilityLabel(Copy.Login.emailPlaceholder)
 
@@ -74,7 +74,7 @@ struct LoginScreen: View {
                 .focused($focusedField, equals: .password)
                 .onSubmit(attemptSignIn)
                 .padding(Constants.l)
-                .background(Color.surface.card)
+                .background(Color.background.card)
                 .clipShape(.rect(cornerRadius: Constants.m))
                 .accessibilityLabel(Copy.Login.passwordPlaceholder)
 

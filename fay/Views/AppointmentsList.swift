@@ -43,7 +43,7 @@ struct AppointmentsList: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.surface.primary.ignoresSafeArea())
+            .background(Color.background.primary.ignoresSafeArea())
             .navigationTitle(Copy.Appointments.screenTitle)
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
@@ -81,7 +81,7 @@ struct AppointmentsList: View {
                         } label: {
                             Text(tab.label)
                                 .font(.subheadline.weight(isSelected ? .semibold : .regular))
-                                .foregroundStyle(isSelected ? Color.fill.accent : .secondary)
+                                .foregroundStyle(isSelected ? Color.accentFill.primary : .secondary)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 10)
                         }
@@ -90,7 +90,7 @@ struct AppointmentsList: View {
                 }
 
                 Rectangle()
-                    .fill(Color.fill.accent)
+                    .fill(Color.accentFill.primary)
                     .frame(width: tabWidth, height: Constants.xxxs)
                     .offset(x: underlineX)
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: underlineX)

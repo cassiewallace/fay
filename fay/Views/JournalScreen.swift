@@ -10,7 +10,7 @@ import SwiftUI
 struct JournalScreen: View {
     var body: some View {
         NavigationStack {
-            Color.surface.primary
+            Color.background.primary
                 .ignoresSafeArea()
                 .navigationTitle(Copy.Tabs.journal)
                 .navigationBarTitleDisplayMode(.large)

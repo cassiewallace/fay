@@ -61,7 +61,7 @@ struct AppointmentCard: View {
                     .glassEffect(.regular, in: .rect(cornerRadius: Constants.l))
             } else {
                 RoundedRectangle(cornerRadius: Constants.l)
-                    .fill(Color.surface.card)
+                    .fill(Color.background.card)
                     .overlay(
                         RoundedRectangle(cornerRadius: Constants.l)
                             .strokeBorder(Color.border.subtle, lineWidth: 1)
@@ -70,7 +70,7 @@ struct AppointmentCard: View {
             }
         } else {
             RoundedRectangle(cornerRadius: Constants.l)
-                .fill(Color.surface.card)
+                .fill(Color.background.card)
                 .overlay(
                     RoundedRectangle(cornerRadius: Constants.l)
                         .strokeBorder(Color.border.default, lineWidth: 1)

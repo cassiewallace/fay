@@ -37,7 +37,7 @@ struct FayButton: View {
             .padding(Constants.xs)
         }
         .foregroundStyle(.white)
-        .background(Color.fill.accent)
+        .background(Color.accentFill.primary)
         .clipShape(.rect(cornerRadius: Constants.s))
         .accessibilityLabel(copy)
     }

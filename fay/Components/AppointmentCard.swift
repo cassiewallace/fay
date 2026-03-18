@@ -9,14 +9,24 @@ import SwiftUI
 
 struct AppointmentCard: View {
     let appointment: Appointment
-    let showJoinButton: Bool
+    let isInProgress: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
-        cardContent
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(accessibilityLabel)
+        if isInProgress, #available(iOS 26, *) {
+            cardContent
+                .glassEffect(.regular, in: .rect(cornerRadius: Constants.l))
+        } else if isInProgress {
+            cardContent
+                .shadow(radius: 12, x: 0, y: 4)
+        } else {
+            cardContent
+                .overlay(
+                    RoundedRectangle(cornerRadius: Constants.l)
+                        .strokeBorder(Color.border.default, lineWidth: 1)
+                )
+        }
     }
 
     private var cardContent: some View {
@@ -26,15 +36,17 @@ struct AppointmentCard: View {
                 appointmentInfo
             }
 
-            if showJoinButton {
+            if isInProgress {
                 FayButton(icon: Image("icon-video-camera"),
                           copy: Copy.Appointments.joinButton)
             }
         }
-        .padding(showJoinButton ? 20 : Constants.l)
+        .padding(isInProgress ? 20 : Constants.l)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(cardBackground)
+        .background(Color.background.white)
         .clipShape(.rect(cornerRadius: Constants.l))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
     }
 
     private var isPast: Bool {
@@ -53,31 +65,6 @@ struct AppointmentCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    @ViewBuilder
-    private var cardBackground: some View {
-        if showJoinButton {
-            if #available(iOS 26, *) {
-                Color.clear
-                    .glassEffect(.regular, in: .rect(cornerRadius: Constants.l))
-            } else {
-                RoundedRectangle(cornerRadius: Constants.l)
-                    .fill(Color.background.card)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: Constants.l)
-                            .strokeBorder(Color.border.subtle, lineWidth: 1)
-                    )
-                    .shadow(color: .black.opacity(0.08), radius: Constants.m, x: Constants.none, y: Constants.xxs)
-            }
-        } else {
-            RoundedRectangle(cornerRadius: Constants.l)
-                .fill(Color.background.card)
-                .overlay(
-                    RoundedRectangle(cornerRadius: Constants.l)
-                        .strokeBorder(Color.border.default, lineWidth: 1)
-                )
-        }
-    }
-
     private var monthText: String {
         appointment.start
             .formatted(.dateTime.month(.abbreviated).locale(.autoupdatingCurrent))
@@ -89,7 +76,7 @@ struct AppointmentCard: View {
     }
 
     private var timeText: String {
-        if showJoinButton {
+        if isInProgress {
             // Expanded format for the current appointment: "11:00 AM - 12:00 PM (PDT)"
             let style = Date.FormatStyle().hour().minute().locale(.autoupdatingCurrent)
             let start = appointment.start.formatted(style)
@@ -115,7 +102,7 @@ struct AppointmentCard: View {
         let startTime = appointment.start.formatted(timeStyle)
         let type = "\(appointment.appointmentType) with \(Copy.Appointments.providerName)"
 
-        if showJoinButton {
+        if isInProgress {
             let endTime = appointment.end.formatted(timeStyle)
             let tz = appointment.start.formatted(
                 .dateTime.timeZone(.specificName(.long)).locale(.autoupdatingCurrent)
@@ -130,13 +117,9 @@ struct AppointmentCard: View {
 // MARK: - Previews
 
 #Preview {
-    List {
-        AppointmentCard(appointment: .previewUpcoming1, showJoinButton: true)
-            .listRowSeparator(.hidden)
-        AppointmentCard(appointment: .previewUpcoming2, showJoinButton: false)
-            .listRowSeparator(.hidden)
-        AppointmentCard(appointment: .previewPast1, showJoinButton: false)
-            .listRowSeparator(.hidden)
+    VStack {
+        AppointmentCard(appointment: .previewUpcoming1, isInProgress: true)
+        AppointmentCard(appointment: .previewUpcoming2, isInProgress: false)
+        AppointmentCard(appointment: .previewPast1, isInProgress: false)
     }
-    .listStyle(.plain)
 }

@@ -18,6 +18,7 @@ extension Color {
         let card = Color("BackgroundCard")
         let muted = Color("BackgroundMuted")
         let subtle = Color("BackgroundSubtle")
+        let white = Color.white
     }
 
     struct ForegroundTokens {

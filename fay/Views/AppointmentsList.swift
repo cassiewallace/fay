@@ -117,17 +117,19 @@ struct AppointmentsList: View {
                 emptyView(for: tab)
             } else {
                 ScrollView {
-                    ForEach(
-                        Array(appointments.enumerated()),
-                        id: \.element.id
-                    ) { index, appointment in
-                        AppointmentCard(
-                            appointment: appointment,
-                            showJoinButton: tab == .upcoming && index == 0
-                        )
+                    VStack(spacing: Constants.l) {
+                        ForEach(
+                            Array(appointments.enumerated()),
+                            id: \.element.id
+                        ) { index, appointment in
+                            AppointmentCard(
+                                appointment: appointment,
+                                isInProgress: tab == .upcoming && index == 0
+                            )
+                        }
                     }
+                    .padding(.vertical, Constants.xl)
                     .padding(.horizontal, Constants.l)
-                    .padding(.vertical, Constants.s)
                 }
             }
         }

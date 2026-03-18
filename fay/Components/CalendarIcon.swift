@@ -76,7 +76,7 @@ struct CalendarIcon: View {
 
     private var monthForeground: Color {
         switch variant {
-        case .upcoming: Color.accentFill.primary
+        case .upcoming: Color.primary
         case .past: Color.foreground.primary
         }
     }

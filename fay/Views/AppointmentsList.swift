@@ -198,7 +198,7 @@ struct AppointmentsList: View {
 #Preview {
     let vm = AppointmentsViewModel()
     vm.state = .loaded([
-        .previewUpcoming1, .previewUpcoming2, .previewUpcoming3,
+        Appointment.previewInProgress(), .previewUpcoming1, .previewUpcoming2, .previewUpcoming3,
         .previewPast1, .previewPast2
     ])
     return AppointmentsList(token: "preview", previewViewModel: vm)

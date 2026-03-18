@@ -86,6 +86,20 @@ extension Appointment {
         recurrenceType: "Weekly"
     )
 
+    static func previewInProgress(now: Date = .now) -> Appointment {
+        Appointment(
+            id: "in-progress",
+            patientID: "1",
+            providerID: "100",
+            status: "In Progress",
+            appointmentType: "Follow-up",
+            start: Calendar.current.date(byAdding: .hour, value: -1, to: now)!,
+            end: Calendar.current.date(byAdding: .hour, value: 1, to: now)!,
+            durationInMinutes: 60,
+            recurrenceType: "Weekly"
+        )
+    }
+
     static let previewPast1 = Appointment(
         id: "4",
         patientID: "1",

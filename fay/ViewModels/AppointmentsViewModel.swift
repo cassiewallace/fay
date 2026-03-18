@@ -25,14 +25,14 @@ final class AppointmentsViewModel {
     var upcomingAppointments: [Appointment] {
         guard case .loaded(let appointments) = state else { return [] }
         return appointments
-            .filter { $0.start >= .now }
+            .filter { $0.end >= .now }
             .sorted { $0.start < $1.start }
     }
 
     var pastAppointments: [Appointment] {
         guard case .loaded(let appointments) = state else { return [] }
         return appointments
-            .filter { $0.start < .now }
+            .filter { $0.end < .now }
             .sorted { $0.start > $1.start }
     }
 

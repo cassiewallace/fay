@@ -50,14 +50,14 @@ struct AppointmentCard: View {
         }
         .padding(isWithinJoinWindow ? 20 : Constants.l)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.background.white)
+        .background(Color.background.card)
         .clipShape(.rect(cornerRadius: Constants.l))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
     }
 
     private var isPast: Bool {
-        appointment.start < .now
+        appointment.end < .now
     }
 
     private var appointmentInfo: some View {

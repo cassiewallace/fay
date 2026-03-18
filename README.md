@@ -12,8 +12,9 @@ A healthcare appointment app for iOS (17.0+), built with SwiftUI.
 - **Minimum deployment target:** is iOS 17.0. iOS 17 is a common deployment floor for new SwiftUI apps and unlocks `@Observable`, which eliminates boilerplate and improves performance over `ObservableObject`. In practice I would validate this against device analytics before committing, but iOS 17 adoption is high enough that it balances technical capability with broad user reach, consistent with Fay's mission of increasing access to affordable, inclusive nutrition counseling. Liquid Glass effects (iOS 26+) are layered on with `.ultraThinMaterial` fallbacks so the app is fully functional on any supported OS version.
 - **Authentication:** Token is held in app state (`@State` in the root view); no keychain persistence for this scope. Login error handling (e.g. retry, field-level validation) was left out of scope. If the token expires, the next API call returns 401 and the user sees the error state with a retry button. A production app would: (1) persist the token in Keychain for session restore, (2) decode the JWT `exp` claim to proactively refresh or prompt re-login before expiry, (3) on 401, clear the token and present the login screen instead of a generic error, and (4) consider refresh tokens if the API supports them.
 - **Appointment card styling:** The prominent card (glass/shadow, join button) is shown when an appointment is in progress or starts within 10 minutes — not by list position. `Appointment.isWithinJoinWindow()` encapsulates this; the 10‑minute window is configurable. "Join appointment" button is no-op and provider name is hard-coded, since the current API does not return provider
-- **Localization:* All user-facing strings run through `String(localized:)` backed by a `Copy` enum and String Catalog (`Localizable.xcstrings`) for future localization
+- **Localization:** All user-facing strings run through `String(localized:)` backed by a `Copy` enum and String Catalog (`Localizable.xcstrings`) for future localization
 - **New Appointment:** Lives in the toolbar, enabling consistent placement and styling across deployment targets and leveraging the latest standards for iOS 26 with Liquid Glass
+- **Dark mode:** All semantic color tokens define both light and dark variants in the asset catalog. System colors (`.primary`, `.secondary`) are used where possible to adapt automatically.
 - **Attribution:** Login screen photo by [Airam Dato-on](https://unsplash.com/@airamdphoto?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/woman-in-gray-button-up-shirt-holding-white-ceramic-mug-T90gWliuCQQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
 
 ## Planning
@@ -25,7 +26,7 @@ See [`PLAN.md`](PLAN.md) for the full implementation plan, architecture decision
 | Area | Time |
 |---|---|
 | Project setup & planning | 0.5 hours |
-| Login screen | ~0.25 hours |
-| Appointments screen | ~1.5 hours |
-| Nice-to-haves | ~.5 hours |
-| **Total** | **TODO** |
+| Login screen | ~0.5 hours |
+| Appointments screen | ~2 hours |
+| Nice-to-haves | ~1 hours |
+| **Total** | ~4 hours |

@@ -13,15 +13,15 @@ struct AppointmentsList: View {
     @State private var viewModel: AppointmentsViewModel
     @State private var selectedTab: AppointmentTab = .upcoming
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     init(token: String, client: any HTTPClientProtocol = HTTPClient.shared) {
         self.token = token
         _viewModel = State(initialValue: AppointmentsViewModel(client: client))
     }
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    enum AppointmentTab: String, CaseIterable {
-        case upcoming, past
+    enum AppointmentTab: Int, CaseIterable {
+        case upcoming = 0, past = 1
 
         var label: String {
             switch self {
@@ -35,13 +35,11 @@ struct AppointmentsList: View {
         NavigationStack {
             VStack(spacing: 0) {
                 tabPicker
-                    .padding(.horizontal)
-                    .padding(.bottom, 8)
 
                 if viewModel.isLoading {
                     loadingView
                 } else {
-                    appointmentList
+                    pagedContent
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -60,51 +58,59 @@ struct AppointmentsList: View {
         }
     }
 
-    @ViewBuilder
     private var tabPicker: some View {
-        if #available(iOS 26, *) {
-            glassTabPicker
-        } else {
-            Picker(String(""), selection: $selectedTab) {
-                ForEach(AppointmentTab.allCases, id: \.self) { tab in
-                    Text(tab.label).tag(tab)
-                }
-            }
-            .pickerStyle(.segmented)
-        }
-    }
+        GeometryReader { geo in
+            let tabWidth = geo.size.width / CGFloat(AppointmentTab.allCases.count)
+            let underlineX = CGFloat(selectedTab.rawValue) * tabWidth
 
-    @available(iOS 26, *)
-    private var glassTabPicker: some View {
-        GlassEffectContainer(spacing: 4) {
-            HStack(spacing: 4) {
-                ForEach(AppointmentTab.allCases, id: \.self) { tab in
-                    Button(tab.label) {
-                        withAnimation(reduceMotion ? nil : .smooth) {
-                            selectedTab = tab
+            ZStack(alignment: .bottomLeading) {
+                Divider()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+
+                HStack(spacing: 0) {
+                    ForEach(AppointmentTab.allCases, id: \.self) { tab in
+                        let isSelected = selectedTab == tab
+                        Button {
+                            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
+                                selectedTab = tab
+                            }
+                        } label: {
+                            Text(tab.label)
+                                .font(.subheadline.weight(isSelected ? .semibold : .regular))
+                                .foregroundStyle(isSelected ? Color.brand.primary : .secondary)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 10)
                         }
+                        .accessibilityAddTraits(isSelected ? [.isSelected] : [])
                     }
-                    .font(.subheadline.weight(selectedTab == tab ? .semibold : .regular))
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 8)
-                    .glassEffect(
-                        selectedTab == tab ? .regular.tint(Color.brand.primary).interactive() : .regular.interactive(),
-                        in: .capsule
-                    )
-                    .accessibilityAddTraits(selectedTab == tab ? [.isSelected] : [])
                 }
+
+                Rectangle()
+                    .fill(Color.brand.primary)
+                    .frame(width: tabWidth, height: 2)
+                    .offset(x: underlineX)
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: underlineX)
             }
         }
+        .frame(height: 44)
     }
 
-    private var appointmentList: some View {
-        let appointments = selectedTab == .upcoming
+    private var pagedContent: some View {
+        TabView(selection: $selectedTab) {
+            appointmentPage(for: .upcoming).tag(AppointmentTab.upcoming)
+            appointmentPage(for: .past).tag(AppointmentTab.past)
+        }
+        .tabViewStyle(.page(indexDisplayMode: .never))
+    }
+
+    private func appointmentPage(for tab: AppointmentTab) -> some View {
+        let appointments = tab == .upcoming
             ? viewModel.upcomingAppointments
             : viewModel.pastAppointments
 
         return Group {
             if appointments.isEmpty {
-                emptyView
+                emptyView(for: tab)
             } else {
                 ScrollView {
                     LazyVStack(spacing: 12) {
@@ -114,7 +120,7 @@ struct AppointmentsList: View {
                         ) { index, appointment in
                             AppointmentCard(
                                 appointment: appointment,
-                                showJoinButton: selectedTab == .upcoming && index == 0
+                                showJoinButton: tab == .upcoming && index == 0
                             )
                         }
                     }
@@ -123,17 +129,16 @@ struct AppointmentsList: View {
                 }
             }
         }
-        .animation(reduceMotion ? nil : .easeInOut, value: selectedTab)
     }
 
-    private var emptyView: some View {
+    private func emptyView(for tab: AppointmentTab) -> some View {
         VStack(spacing: 12) {
             Spacer()
             Image(systemName: "calendar")
                 .font(.system(size: 48))
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
-            Text(selectedTab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast)
+            Text(tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast)
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
             Spacer()

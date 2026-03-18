@@ -14,18 +14,19 @@ struct FayButton: View {
     var body: some View {
         // TODO: Combine a11y children?
         Button { /* no-op */ } label: {
-            HStack(spacing: 8) {
+            HStack(spacing: Constants.s) {
                 icon
                     .accessibilityHidden(true)
                 Text(copy)
                     .font(.subheadline.weight(.semibold))
             }
             .frame(maxWidth: .infinity)
-            .padding(16)
+            .padding(.vertical, Constants.s)
+            .padding(.horizontal, Constants.l)
         }
         .foregroundStyle(.white)
         .background(Color.fill.accent)
-        .clipShape(.rect(cornerRadius: 8))
+        .clipShape(.rect(cornerRadius: Constants.s))
         .accessibilityLabel(Copy.Appointments.joinButton)
     }
 }

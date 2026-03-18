@@ -20,8 +20,8 @@ struct AppointmentCard: View {
     }
 
     private var cardContent: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            HStack(alignment: .center, spacing: 16) {
+        VStack(alignment: .leading, spacing: Constants.m) {
+            HStack(alignment: .center, spacing: Constants.l) {
                 dateBadge
                 appointmentInfo
             }
@@ -31,10 +31,10 @@ struct AppointmentCard: View {
                           copy: Copy.Appointments.joinButton)
             }
         }
-        .padding(showJoinButton ? 20 : 16)
+        .padding(showJoinButton ? 20 : Constants.l)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(cardBackground)
-        .clipShape(.rect(cornerRadius: 16))
+        .clipShape(.rect(cornerRadius: Constants.l))
     }
 
     private var isPast: Bool {
@@ -69,7 +69,7 @@ struct AppointmentCard: View {
     }
 
     private var appointmentInfo: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: Constants.xs) {
             Text(timeText)
                 .font(.body.weight(.semibold))
                 .foregroundStyle(.primary)
@@ -85,21 +85,21 @@ struct AppointmentCard: View {
         if showJoinButton {
             if #available(iOS 26, *) {
                 Color.clear
-                    .glassEffect(.regular, in: .rect(cornerRadius: 16))
+                    .glassEffect(.regular, in: .rect(cornerRadius: Constants.l))
             } else {
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: Constants.l)
                     .fill(Color.surface.card)
                     .overlay(
-                        RoundedRectangle(cornerRadius: 16)
+                        RoundedRectangle(cornerRadius: Constants.l)
                             .strokeBorder(Color.border.subtle, lineWidth: 1)
                     )
-                    .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
+                    .shadow(color: .black.opacity(0.08), radius: Constants.m, x: Constants.none, y: Constants.xxs)
             }
         } else {
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: Constants.l)
                 .fill(Color.surface.card)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: Constants.l)
                         .strokeBorder(Color.border.default, lineWidth: 1)
                 )
         }

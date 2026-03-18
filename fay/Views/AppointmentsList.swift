@@ -91,7 +91,7 @@ struct AppointmentsList: View {
 
                 Rectangle()
                     .fill(Color.fill.accent)
-                    .frame(width: tabWidth, height: 2)
+                    .frame(width: tabWidth, height: Constants.xxxs)
                     .offset(x: underlineX)
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: underlineX)
             }
@@ -117,7 +117,7 @@ struct AppointmentsList: View {
                 emptyView(for: tab)
             } else {
                 ScrollView {
-                    LazyVStack(spacing: 12) {
+                    LazyVStack(spacing: Constants.m) {
                         ForEach(
                             Array(appointments.enumerated()),
                             id: \.element.id
@@ -128,15 +128,15 @@ struct AppointmentsList: View {
                             )
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
+                    .padding(.horizontal, Constants.l)
+                    .padding(.vertical, Constants.s)
                 }
             }
         }
     }
 
     private func emptyView(for tab: AppointmentTab) -> some View {
-        VStack(spacing: 12) {
+        VStack(spacing: Constants.m) {
             Spacer()
             Image("icon-calendar")
                 .resizable()

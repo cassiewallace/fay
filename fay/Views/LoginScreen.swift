@@ -29,11 +29,11 @@ struct LoginScreen: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 32) {
+            VStack(spacing: Constants.xxl) {
                 headerSection
                 formSection
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, Constants.xl)
             .padding(.top, 80)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -41,7 +41,7 @@ struct LoginScreen: View {
     }
 
     private var headerSection: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: Constants.s) {
             Text(Copy.Login.screenTitle)
                 .font(.largeTitle.bold())
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -53,7 +53,7 @@ struct LoginScreen: View {
     }
 
     private var formSection: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: Constants.l) {
             if let errorMessage = viewModel.errorMessage {
                 errorBanner(message: errorMessage)
             }
@@ -65,18 +65,18 @@ struct LoginScreen: View {
                 .autocorrectionDisabled()
                 .focused($focusedField, equals: .username)
                 .onSubmit { focusedField = .password }
-                .padding()
+                .padding(Constants.l)
                 .background(Color.surface.card)
-                .clipShape(.rect(cornerRadius: 12))
+                .clipShape(.rect(cornerRadius: Constants.m))
                 .accessibilityLabel(Copy.Login.emailPlaceholder)
 
             SecureField(Copy.Login.passwordPlaceholder, text: $password)
                 .textContentType(.password)
                 .focused($focusedField, equals: .password)
                 .onSubmit(attemptSignIn)
-                .padding()
+                .padding(Constants.l)
                 .background(Color.surface.card)
-                .clipShape(.rect(cornerRadius: 12))
+                .clipShape(.rect(cornerRadius: Constants.m))
                 .accessibilityLabel(Copy.Login.passwordPlaceholder)
 
             signInButton
@@ -84,11 +84,11 @@ struct LoginScreen: View {
     }
 
     private func errorBanner(message: String) -> some View {
-        HStack(spacing: 8) {
+        HStack(spacing: Constants.s) {
             Image(systemName: "exclamationmark.circle.fill")
                 .foregroundStyle(.red)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: Constants.xxxs) {
                 Text(Copy.Login.errorTitle)
                     .font(.subheadline.bold())
                 Text(message)
@@ -97,9 +97,9 @@ struct LoginScreen: View {
             }
             Spacer()
         }
-        .padding()
+        .padding(Constants.l)
         .background(Color.red.opacity(0.08))
-        .clipShape(.rect(cornerRadius: 12))
+        .clipShape(.rect(cornerRadius: Constants.m))
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isStaticText)
     }
@@ -142,7 +142,7 @@ private struct PrimaryButtonStyle: ButtonStyle {
                 Color.fill.accent
                     .opacity(configuration.isPressed ? 0.8 : 1)
             )
-            .clipShape(.rect(cornerRadius: 12))
+            .clipShape(.rect(cornerRadius: Constants.m))
     }
 }
 

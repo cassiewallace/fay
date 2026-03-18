@@ -16,8 +16,7 @@ A healthcare appointment app for iOS (17.0+), built with SwiftUI.
 
 ## Planning
 
-See [`docs/PLAN.md`](docs/PLAN.md) for the full implementation plan, architecture
-decisions, color system, accessibility notes, and file structure. The app was built in part with [Cursor](https://cursor.com) using Anthropic (Claude) models.
+See [`PLAN.md`](PLAN.md) for the full implementation plan, architecture decisions, color system, accessibility notes, and file structure. The app was built in part with [Cursor](https://cursor.com) using Anthropic (Claude) models.
 
 ## Time Breakdown
 

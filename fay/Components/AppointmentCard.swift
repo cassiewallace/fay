@@ -9,13 +9,18 @@ import SwiftUI
 
 /// Card displaying a single appointment with date, type, and optional join button.
 struct AppointmentCard: View {
-
-    // MARK: - Lifecycle
+    
+    // MARK: - Properties
 
     /// The appointment to display.
     let appointment: Appointment
     /// When true, appointment is in progress or starts within 10 minutes; shows glass/shadow styling and join button.
     let isWithinJoinWindow: Bool
+    
+    // MARK: - Private Properties
+    
+    @ScaledMetric(relativeTo: .subheadline) private var timeFontSize: CGFloat = 14
+    @ScaledMetric(relativeTo: .caption) private var typeFontSize: CGFloat = 12
 
     // MARK: - Body
 
@@ -64,10 +69,10 @@ struct AppointmentCard: View {
     private var appointmentInfo: some View {
         VStack(alignment: .leading, spacing: Constants.s) {
             Text(timeText)
-                .font(.system(size: 14, weight: .semibold))
+                .font(.system(size: timeFontSize, weight: .semibold))
                 .foregroundStyle(.primary)
             Text("\(appointment.appointmentType) with \(Copy.Appointments.providerName)")
-                .font(.system(size: 12))
+                .font(.system(size: typeFontSize))
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

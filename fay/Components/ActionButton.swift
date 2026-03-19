@@ -24,7 +24,10 @@ struct ActionButton: View {
     let action: (() -> Void)?
     
     // MARK: - Private Properties
-    
+
+    @ScaledMetric(relativeTo: .subheadline) private var fontSize = 14.0
+    @ScaledMetric private var height = 44.0
+
     private var background: Color {
         isDisabled ? Color.accentFill.primary.opacity(0.5) : Color.accentFill.primary
     }
@@ -59,12 +62,12 @@ struct ActionButton: View {
                                 .accessibilityHidden(true)
                         }
                         Text(copy)
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.system(size: fontSize, weight: .semibold))
                     }
                 }
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 44)
+            .frame(height: height)
         }
         .disabled(isLoading)
         .foregroundStyle(.white)

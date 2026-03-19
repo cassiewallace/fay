@@ -25,7 +25,9 @@ struct CalendarIcon: View {
     // MARK: - Private Properties
 
     private let cornerRadius: CGFloat = Constants.s
-    private let size: CGFloat = Constants.xxxl
+    @ScaledMetric(relativeTo: .caption) private var monthFontSize = Constants.m
+    @ScaledMetric(relativeTo: .body) private var dayFontSize: CGFloat = 18
+    @ScaledMetric private var size: CGFloat = Constants.xxxl
 
     private var outerFill: Color {
         switch variant {
@@ -69,14 +71,14 @@ struct CalendarIcon: View {
 
             VStack(spacing: 0) {
                 Text(month.uppercased())
-                    .font(.system(size: Constants.m, weight: .semibold))
+                    .font(.system(size: monthFontSize, weight: .semibold))
                     .foregroundStyle(textForeground)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.xs)
                     .background(monthBackground)
 
                 Text("\(day)")
-                    .font(.system(size: 18, weight: .medium))
+                    .font(.system(size: dayFontSize, weight: .medium))
                     .foregroundStyle(textForeground)
                     .padding(.vertical, Constants.xs)
             }

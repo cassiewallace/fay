@@ -1,5 +1,5 @@
 //
-//  FayButton.swift
+//  ActionButton.swift
 //  fay
 //
 //  Created by Cassie Wallace on 3/18/26.
@@ -8,27 +8,38 @@
 import SwiftUI
 
 /// Primary action button with optional leading icon and loading state.
-struct FayButton: View {
-
-    // MARK: - Lifecycle
-
-    init(icon: Image? = nil, copy: String, action: (() -> Void)? = nil, isLoading: Bool = false) {
-        self.icon = icon
-        self.copy = copy
-        self.action = action
-        self.isLoading = isLoading
-    }
-
-    // MARK: - Body
+struct ActionButton: View {
+    
+    // MARK: - Properties
 
     /// Optional icon shown before the label.
     let icon: Image?
     /// Button label text.
     let copy: String
-    /// Action to perform on tap.
-    let action: (() -> Void)?
     /// When true, shows a spinner instead of the label.
     let isLoading: Bool
+    /// When true, shows a disabled state and prevents tap.
+    let isDisabled: Bool
+    /// Action to perform on tap.
+    let action: (() -> Void)?
+    
+    // MARK: - Private Properties
+    
+    private var background: Color {
+        isDisabled ? Color.accentFill.primary.opacity(0.5) : Color.accentFill.primary
+    }
+
+    // MARK: - Lifecycle
+
+    init(icon: Image? = nil, copy: String, isLoading: Bool = false, isDisabled: Bool = false, action: (() -> Void)? = nil) {
+        self.icon = icon
+        self.copy = copy
+        self.isLoading = isLoading
+        self.isDisabled = isDisabled
+        self.action = action
+    }
+
+    // MARK: - Body
 
     var body: some View {
         Button {
@@ -53,12 +64,11 @@ struct FayButton: View {
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, Constants.m)
-            .padding(.horizontal, Constants.s)
+            .frame(height: 44)
         }
         .disabled(isLoading)
         .foregroundStyle(.white)
-        .background(Color.accentFill.primary)
+        .background(background)
         .clipShape(.rect(cornerRadius: Constants.s))
         .accessibilityLabel(copy)
     }

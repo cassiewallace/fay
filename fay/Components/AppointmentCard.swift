@@ -45,7 +45,7 @@ struct AppointmentCard: View {
             }
 
             if isWithinJoinWindow {
-                FayButton(icon: Image("icon-video-camera"),
+                ActionButton(icon: Image("icon-video-camera"),
                           copy: Copy.Appointments.joinButton)
             }
         }
@@ -120,4 +120,5 @@ struct AppointmentCard: View {
         AppointmentCard(appointment: .previewUpcoming2, isWithinJoinWindow: false)
         AppointmentCard(appointment: .previewPast1, isWithinJoinWindow: false)
     }
+    .padding()
 }

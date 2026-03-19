@@ -9,7 +9,16 @@ import SwiftUI
 
 struct CalendarIcon: View {
 
+    enum Variant {
+        case upcoming
+        case past
+    }
+
     // MARK: - Lifecycle
+
+    let month: String
+    let day: Int
+    let variant: Variant
 
     init(date: Date, variant: Variant = .upcoming, calendar: Calendar = .current, locale: Locale = .autoupdatingCurrent) {
         let formatter = DateFormatter()
@@ -23,18 +32,6 @@ struct CalendarIcon: View {
 
     // MARK: - Body
 
-    enum Variant {
-        case upcoming
-        case past
-    }
-
-    let month: String
-    let day: Int
-    let variant: Variant
-
-    private let cornerRadius: CGFloat = Constants.s
-    private let size: CGFloat = Constants.xxxl
-
     var body: some View {
         ZStack(alignment: .top) {
             RoundedRectangle(cornerRadius: cornerRadius)
@@ -43,14 +40,14 @@ struct CalendarIcon: View {
             VStack(spacing: 0) {
                 Text(month.uppercased())
                     .font(.system(size: Constants.m, weight: .semibold))
-                    .foregroundStyle(monthForeground)
+                    .foregroundStyle(textForeground)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, Constants.xs)
                     .background(monthBackground)
 
                 Text("\(day)")
                     .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(dayForeground)
+                    .foregroundStyle(textForeground)
                     .padding(.vertical, Constants.xs)
             }
         }
@@ -59,6 +56,9 @@ struct CalendarIcon: View {
     }
 
     // MARK: - Private
+
+    private let cornerRadius: CGFloat = Constants.s
+    private let size: CGFloat = Constants.xxxl
 
     private var outerFill: Color {
         switch variant {
@@ -74,14 +74,7 @@ struct CalendarIcon: View {
         }
     }
 
-    private var monthForeground: Color {
-        switch variant {
-        case .upcoming: Color.primary
-        case .past: Color.foreground.primary
-        }
-    }
-
-    private var dayForeground: Color {
+    private var textForeground: Color {
         switch variant {
         case .upcoming: Color.primary
         case .past: Color.foreground.primary

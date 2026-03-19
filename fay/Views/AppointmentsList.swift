@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AppointmentsList: View {
+    
+    // MARK: - Enums
 
     private enum AppointmentTab: Int, CaseIterable {
         case upcoming = 0, past = 1
@@ -19,15 +21,20 @@ struct AppointmentsList: View {
             }
         }
     }
-
-    // MARK: - Lifecycle
+    
+    // MARK: - Properties
 
     let token: String
+    
+    // MARK: - Private Properties
+    
     private let isPreview: Bool
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var viewModel: AppointmentsViewModel
     @State private var selectedTab: AppointmentTab = .upcoming
     @State private var isShowingNewAppointment = false
+
+    // MARK: - Lifecycle
 
     init(token: String, previewViewModel: AppointmentsViewModel? = nil) {
         self.token = token
@@ -96,7 +103,7 @@ struct AppointmentsList: View {
         }
     }
 
-    // MARK: - Private
+    // MARK: - Subviews
 
     private var tabPicker: some View {
         VStack(spacing: 0) {
@@ -136,36 +143,7 @@ struct AppointmentsList: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .clipped()
-    }
-
-    private func appointmentPage(for tab: AppointmentTab) -> some View {
-        let appointments = tab == .upcoming
-            ? viewModel.upcomingAppointments
-            : viewModel.pastAppointments
-
-        return Group {
-            if appointments.isEmpty {
-                ContentUnavailableView(
-                    tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast,
-                    image: "icon-calendar"
-                )
-                .foregroundStyle(.secondary)
-            } else {
-                ScrollView {
-                    VStack(spacing: Constants.l) {
-                        ForEach(appointments, id: \.id) { appointment in
-                            AppointmentCard(
-                                appointment: appointment,
-                                isWithinJoinWindow: appointment.isWithinJoinWindow()
-                            )
-                        }
-                    }
-                    .padding(.vertical, Constants.xl)
-                    .padding(.horizontal, Constants.l)
-                }
-            }
-        }
-    }
+    }    
 
     private var loadingView: some View {
         VStack {
@@ -195,6 +173,37 @@ struct AppointmentsList: View {
             .buttonStyle(.borderedProminent)
             .tint(.accentFill.primary)
             Spacer()
+        }
+    }
+    
+    // MARK: - Private Functions
+
+    private func appointmentPage(for tab: AppointmentTab) -> some View {
+        let appointments = tab == .upcoming
+            ? viewModel.upcomingAppointments
+            : viewModel.pastAppointments
+
+        return Group {
+            if appointments.isEmpty {
+                ContentUnavailableView(
+                    tab == .upcoming ? Copy.Appointments.emptyUpcoming : Copy.Appointments.emptyPast,
+                    image: "icon-calendar"
+                )
+                .foregroundStyle(.secondary)
+            } else {
+                ScrollView {
+                    VStack(spacing: Constants.l) {
+                        ForEach(appointments, id: \.id) { appointment in
+                            AppointmentCard(
+                                appointment: appointment,
+                                isWithinJoinWindow: appointment.isWithinJoinWindow()
+                            )
+                        }
+                    }
+                    .padding(.vertical, Constants.xl)
+                    .padding(.horizontal, Constants.l)
+                }
+            }
         }
     }
 }

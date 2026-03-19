@@ -8,6 +8,23 @@
 import SwiftUI
 
 struct LoginScreen: View {
+    
+    // MARK: - Enums
+
+    private enum Field {
+        case username, password
+    }
+    
+    // MARK: - Properties
+
+    var onSignedIn: (String) -> Void
+    
+    // MARK: - Private Properties
+    
+    @State private var viewModel = AuthViewModel()
+    @State private var username = ""
+    @State private var password = ""
+    @FocusState private var focusedField: Field?
 
     // MARK: - Lifecycle
 
@@ -16,16 +33,6 @@ struct LoginScreen: View {
     }
 
     // MARK: - Body
-
-    var onSignedIn: (String) -> Void
-    @State private var viewModel = AuthViewModel()
-    @State private var username = ""
-    @State private var password = ""
-    @FocusState private var focusedField: Field?
-
-    private enum Field {
-        case username, password
-    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -51,7 +58,7 @@ struct LoginScreen: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
-    // MARK: - Private
+    // MARK: - Subviews
 
     private var loginCard: some View {
         formSection
@@ -110,10 +117,13 @@ struct LoginScreen: View {
                     .accessibilityLabel(Copy.Login.passwordTitle)
             }
 
-            FayButton(copy: Copy.Login.signInButton, action: attemptSignIn, isLoading: viewModel.state.isLoading)
-                .disabled(username.isEmpty || password.isEmpty)
+            ActionButton(copy: Copy.Login.signInButton, isLoading: viewModel.state.isLoading, isDisabled: username.isEmpty || password.isEmpty) {
+                attemptSignIn()
+            }
         }
     }
+    
+    // MARK: - Private Functions
 
     private func errorBanner(message: String) -> some View {
         HStack(spacing: Constants.s) {

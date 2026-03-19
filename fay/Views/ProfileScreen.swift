@@ -15,13 +15,10 @@ struct ProfileScreen: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Button(Copy.Profile.signOutButton, role: .destructive) {
-                    signOut()
-                }
+            ActionButton(copy: Copy.Profile.signOutButton) {
+                signOut()
             }
-            .scrollContentBackground(.hidden)
-            .background(Color.background.primary.ignoresSafeArea())
+            .padding()
             .navigationTitle(Copy.Tabs.profile)
             .navigationBarTitleDisplayMode(.large)
         }

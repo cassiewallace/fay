@@ -54,9 +54,3 @@ struct AppTabBar: View {
         .tint(.accentFill.primary)
     }
 }
-
-// MARK: - Previews
-
-#Preview("Default") {
-    AppTabBar(token: "preview")
-}

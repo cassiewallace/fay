@@ -7,9 +7,10 @@
 
 import Foundation
 
-// MARK: - Appointment
-
 struct Appointment: Codable, Identifiable {
+
+    // MARK: - Properties
+    
     let id: String
     let patientID: String
     let providerID: String
@@ -19,6 +20,8 @@ struct Appointment: Codable, Identifiable {
     let end: Date
     let durationInMinutes: Int
     let recurrenceType: String
+    
+    // MARK: - Functions
 
     /// True if the appointment is in progress or starts within the next 10 minutes.
     func isWithinJoinWindow(now: Date = .now, windowMinutes: Int = 10) -> Bool {

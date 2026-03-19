@@ -9,8 +9,6 @@ import Foundation
 
 enum Copy {
 
-    // MARK: - Login
-
     enum Login {
         static let usernameTitle = String(localized: "login.username.title", defaultValue: "Username")
         static let passwordTitle = String(localized: "login.password.title", defaultValue: "Password")
@@ -21,8 +19,6 @@ enum Copy {
         static let screenTitle = String(localized: "login.screen.title", defaultValue: "Welcome back")
         static let screenSubtitle = String(localized: "login.screen.subtitle", defaultValue: "Sign in to your account")
     }
-
-    // MARK: - Appointments
 
     enum Appointments {
         static let screenTitle = String(localized: "appointments.screen.title", defaultValue: "Appointments")
@@ -40,13 +36,9 @@ enum Copy {
         static let newAppointmentSheetPlaceholder = String(localized: "appointments.new.sheet.placeholder", defaultValue: "Nothing here yet!")
     }
 
-    // MARK: - Profile
-
     enum Profile {
         static let signOutButton = String(localized: "profile.sign_out.button", defaultValue: "Sign Out")
     }
-
-    // MARK: - Tabs
 
     enum Tabs {
         static let appointments = String(localized: "tab.appointments", defaultValue: "Appointments")
@@ -55,19 +47,13 @@ enum Copy {
         static let profile = String(localized: "tab.profile", defaultValue: "Profile")
     }
 
-    // MARK: - Chat
-
     enum Chat {
         static let empty = String(localized: "chat.empty", defaultValue: "No messages yet")
     }
 
-    // MARK: - Journal
-
     enum Journal {
         static let empty = String(localized: "journal.empty", defaultValue: "No journal entries yet")
     }
-
-    // MARK: - Errors
 
     enum Errors {
         static let generic = String(localized: "error.generic", defaultValue: "Something went wrong. Please try again.")

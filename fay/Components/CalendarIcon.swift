@@ -8,17 +8,47 @@
 import SwiftUI
 
 struct CalendarIcon: View {
+    
+    // MARK: - Enums
 
     enum Variant {
         case upcoming
         case past
     }
 
-    // MARK: - Lifecycle
-
+    // MARK: - Properties
+    
     let month: String
     let day: Int
     let variant: Variant
+    
+    // MARK: - Private Properties
+
+    private let cornerRadius: CGFloat = Constants.s
+    private let size: CGFloat = Constants.xxxl
+
+    private var outerFill: Color {
+        switch variant {
+        case .upcoming: Color.border.subtle
+        case .past: Color.background.subtle
+        }
+    }
+
+    private var monthBackground: Color {
+        switch variant {
+        case .upcoming: Color.accentFill.subtle
+        case .past: Color.background.muted
+        }
+    }
+
+    private var textForeground: Color {
+        switch variant {
+        case .upcoming: Color.primary
+        case .past: Color.foreground.primary
+        }
+    }
+    
+    // MARK: - Lifecycle
 
     init(date: Date, variant: Variant = .upcoming, calendar: Calendar = .current, locale: Locale = .autoupdatingCurrent) {
         let formatter = DateFormatter()
@@ -53,32 +83,6 @@ struct CalendarIcon: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
         .frame(width: size, height: size)
-    }
-
-    // MARK: - Private
-
-    private let cornerRadius: CGFloat = Constants.s
-    private let size: CGFloat = Constants.xxxl
-
-    private var outerFill: Color {
-        switch variant {
-        case .upcoming: Color.border.subtle
-        case .past: Color.background.subtle
-        }
-    }
-
-    private var monthBackground: Color {
-        switch variant {
-        case .upcoming: Color.accentFill.subtle
-        case .past: Color.background.muted
-        }
-    }
-
-    private var textForeground: Color {
-        switch variant {
-        case .upcoming: Color.primary
-        case .past: Color.foreground.primary
-        }
     }
 }
 

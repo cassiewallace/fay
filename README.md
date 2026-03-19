@@ -18,7 +18,7 @@ An appointment app for iOS built with SwiftUI.
 - **Accessibility:** Semantic labels, Reduce Motion support, 44pt touch targets, and system colors for contrast. Dynamic Type is supported, but needs polish for production; `CalendarIcon` and the tab picker use fixed sizes that would need flexible layouts in production.
 - **Testing:** `HTTPClient` is covered with Swift Testing + `MockURLProtocol`, testing success, 401, and malformed JSON for both endpoints. I opted out of a protocol abstraction for `HTTPClient` given the narrow scope; in production I'd extract a protocol to enable VM-level unit testing and easier mocking. `AppointmentsViewModel` is initialized via `_viewModel = State(initialValue:)` in the `AppointmentsList` init — the idiomatic SwiftUI pattern for injecting an `@Observable` view model that needs to be owned as `@State` while still supporting preview injection.
 - **Attribution:** Login photo by [Airam Dato-on](https://unsplash.com/@airamdphoto?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/woman-in-gray-button-up-shirt-holding-white-ceramic-mug-T90gWliuCQQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
-- **Use of AI:**  The app was built in part with Cursor using Anthropic (Claude) models.
+- **Use of AI:**  The app was built with Xcode and Cursor using Anthropic (Claude) models. Architecture decisions, tradeoffs, and all final judgment calls were mine. This reflects how I'd work on your team.
 
 ## Time Breakdown
 

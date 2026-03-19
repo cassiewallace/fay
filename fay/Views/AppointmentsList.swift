@@ -93,13 +93,7 @@ struct AppointmentsList: View {
             await viewModel.loadAppointments(token: token)
         }
         .sheet(isPresented: $isShowingNewAppointment) {
-            VStack(spacing: Constants.l) {
-                Text(Copy.Appointments.newAppointmentSheetTitle)
-                    .font(.title)
-                    .bold()
-                Text(Copy.Appointments.newAppointmentSheetPlaceholder)
-            }
-            .presentationDetents([.medium])
+            newAppointmentSheet
         }
     }
 
@@ -123,7 +117,7 @@ struct AppointmentsList: View {
                                 .padding(.vertical, Constants.l)
                             Rectangle()
                                 .fill(isSelected ? Color.accentFill.primary : Color.clear)
-                                .frame(height: Constants.xs)
+                                .frame(height: 1)
                                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isSelected)
                         }
                     }
@@ -154,6 +148,18 @@ struct AppointmentsList: View {
             Spacer()
         }
     }
+    
+    private var newAppointmentSheet: some View {
+        VStack(spacing: Constants.l) {
+            Text(Copy.Appointments.newAppointmentSheetTitle)
+                .font(.title)
+                .bold()
+            Text(Copy.Appointments.newAppointmentSheetPlaceholder)
+        }
+        .presentationDetents([.medium])
+    }
+    
+    // MARK: - Private functions
 
     private func errorView(message: String) -> some View {
         VStack(spacing: Constants.m) {

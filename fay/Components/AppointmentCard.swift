@@ -62,7 +62,7 @@ struct AppointmentCard: View {
     }
 
     private var appointmentInfo: some View {
-        VStack(alignment: .leading, spacing: Constants.xs) {
+        VStack(alignment: .leading, spacing: Constants.s) {
             Text(timeText)
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.primary)

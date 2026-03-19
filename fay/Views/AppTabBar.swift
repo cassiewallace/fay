@@ -8,6 +8,14 @@
 import SwiftUI
 
 struct AppTabBar: View {
+    
+    // MARK: - Properties
+
+    let token: String
+    
+    // MARK: - Private Properties
+    
+    @State private var selectedTab = 0
 
     // MARK: - Lifecycle
 
@@ -21,9 +29,6 @@ struct AppTabBar: View {
     }
 
     // MARK: - Body
-
-    let token: String
-    @State private var selectedTab = 0
 
     var body: some View {
         TabView(selection: $selectedTab) {

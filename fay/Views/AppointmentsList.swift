@@ -9,23 +9,6 @@ import SwiftUI
 
 struct AppointmentsList: View {
 
-    // MARK: - Lifecycle
-
-    init(token: String, previewViewModel: AppointmentsViewModel? = nil) {
-        self.token = token
-        self.viewModel = previewViewModel ?? AppointmentsViewModel()
-        self.isPreview = previewViewModel != nil
-    }
-
-    // MARK: - Body
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    private let viewModel: AppointmentsViewModel
-    private let isPreview: Bool
-    let token: String
-    @State private var selectedTab: AppointmentTab = .upcoming
-    @State private var isShowingNewAppointment = false
-
     private enum AppointmentTab: Int, CaseIterable {
         case upcoming = 0, past = 1
 
@@ -36,6 +19,23 @@ struct AppointmentsList: View {
             }
         }
     }
+
+    // MARK: - Lifecycle
+
+    let token: String
+    private let isPreview: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var viewModel: AppointmentsViewModel
+    @State private var selectedTab: AppointmentTab = .upcoming
+    @State private var isShowingNewAppointment = false
+
+    init(token: String, previewViewModel: AppointmentsViewModel? = nil) {
+        self.token = token
+        self.isPreview = previewViewModel != nil
+        _viewModel = State(initialValue: previewViewModel ?? AppointmentsViewModel())
+    }
+
+    // MARK: - Body
 
     var body: some View {
         NavigationStack {

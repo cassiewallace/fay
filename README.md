@@ -21,6 +21,7 @@ An appointment app for iOS built with SwiftUI.
 - **Use of AI:**  The app was built with Xcode and Cursor using Anthropic (Claude) models. Architecture decisions, tradeoffs, and all final judgment calls were mine. This reflects how I'd work on your team.
 
 ## What I'd Improve With More Time
+- **AppointmentsList is doing a lot:** Tab state, sheet state, error rendering, paging. I would break this up into smaller views and files. 
 - **Token persistence:** Move the auth token from root `@State` to Keychain, add proactive refresh before expiry, and redirect to login on 401.
 - **Dynamic Type polish:** `CalendarIcon` and the tab picker use fixed sizes that would need flexible layouts to fully support extreme text size categories.
 - **Error recovery:** Add retry logic for failed network requests rather than relying on manual retry.

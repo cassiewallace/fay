@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Appointment: Codable, Identifiable {
+struct Appointment: Codable, Identifiable, Equatable {
 
     // MARK: - Properties
     
@@ -59,8 +59,8 @@ extension Appointment {
         providerID: "100",
         status: "Scheduled",
         appointmentType: "Follow-up",
-        start: Calendar.current.date(byAdding: .day, value: 7, to: .now)!,
-        end: Calendar.current.date(byAdding: .day, value: 7, to: .now)!.addingTimeInterval(3600),
+        start: Calendar.current.date(byAdding: .day, value: 7, to: .now) ?? .now,
+        end: (Calendar.current.date(byAdding: .day, value: 7, to: .now) ?? .now).addingTimeInterval(3600),
         durationInMinutes: 60,
         recurrenceType: "Weekly"
     )
@@ -71,8 +71,8 @@ extension Appointment {
         providerID: "100",
         status: "Scheduled",
         appointmentType: "Follow-up",
-        start: Calendar.current.date(byAdding: .day, value: 30, to: .now)!,
-        end: Calendar.current.date(byAdding: .day, value: 30, to: .now)!.addingTimeInterval(3600),
+        start: Calendar.current.date(byAdding: .day, value: 30, to: .now) ?? .now,
+        end: (Calendar.current.date(byAdding: .day, value: 30, to: .now) ?? .now).addingTimeInterval(3600),
         durationInMinutes: 60,
         recurrenceType: "Weekly"
     )
@@ -83,8 +83,8 @@ extension Appointment {
         providerID: "100",
         status: "Scheduled",
         appointmentType: "Follow-up",
-        start: Calendar.current.date(byAdding: .day, value: 60, to: .now)!,
-        end: Calendar.current.date(byAdding: .day, value: 60, to: .now)!.addingTimeInterval(3600),
+        start: Calendar.current.date(byAdding: .day, value: 60, to: .now) ?? .now,
+        end: (Calendar.current.date(byAdding: .day, value: 60, to: .now) ?? .now).addingTimeInterval(3600),
         durationInMinutes: 60,
         recurrenceType: "Weekly"
     )
@@ -96,8 +96,8 @@ extension Appointment {
             providerID: "100",
             status: "In Progress",
             appointmentType: "Follow-up",
-            start: Calendar.current.date(byAdding: .hour, value: -1, to: now)!,
-            end: Calendar.current.date(byAdding: .hour, value: 1, to: now)!,
+            start: Calendar.current.date(byAdding: .hour, value: -1, to: now) ?? now,
+            end: Calendar.current.date(byAdding: .hour, value: 1, to: now) ?? now,
             durationInMinutes: 60,
             recurrenceType: "Weekly"
         )
@@ -109,8 +109,8 @@ extension Appointment {
         providerID: "100",
         status: "Completed",
         appointmentType: "Follow-up",
-        start: Calendar.current.date(byAdding: .day, value: -14, to: .now)!,
-        end: Calendar.current.date(byAdding: .day, value: -14, to: .now)!.addingTimeInterval(3600),
+        start: Calendar.current.date(byAdding: .day, value: -14, to: .now) ?? .now,
+        end: (Calendar.current.date(byAdding: .day, value: -14, to: .now) ?? .now).addingTimeInterval(3600),
         durationInMinutes: 60,
         recurrenceType: "Weekly"
     )
@@ -121,8 +121,8 @@ extension Appointment {
         providerID: "100",
         status: "Completed",
         appointmentType: "Follow-up",
-        start: Calendar.current.date(byAdding: .day, value: -30, to: .now)!,
-        end: Calendar.current.date(byAdding: .day, value: -30, to: .now)!.addingTimeInterval(3600),
+        start: Calendar.current.date(byAdding: .day, value: -30, to: .now) ?? .now,
+        end: (Calendar.current.date(byAdding: .day, value: -30, to: .now) ?? .now).addingTimeInterval(3600),
         durationInMinutes: 60,
         recurrenceType: "Weekly"
     )

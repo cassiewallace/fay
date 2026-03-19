@@ -159,7 +159,7 @@ struct AppointmentsList: View {
         .presentationDetents([.medium])
     }
     
-    // MARK: - Private functions
+    // MARK: - Private Functions
 
     private func errorView(message: String) -> some View {
         VStack(spacing: Constants.m) {

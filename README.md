@@ -9,16 +9,22 @@ An appointment app for iOS built with SwiftUI.
 ## Implementation Notes
 - **Architecture:** MVVM with a custom `HTTPClient` for networking.
 - **Deployment target:** iOS 17.0, which unlocks `@Observable` and has broad adoption. iOS 26 Liquid Glass is layered on with fallbacks for graceful backward compatibility.
-- **Authentication:** Token stored in root `@State`; a production app would persist to Keychain, proactively refresh before expiry, and redirect to login on 401.
-- **Appointment cards:** The prominent card (glass/shadow + join button) appears when an appointment is in progress or starts within 10 minutes, controlled by `Appointment.isWithinJoinWindow()`. Provider name is always shown as a deliberate UX choice: it gives context at a glance without tapping in. "Join" is no-op.
+- **Authentication:** Token stored in root `@State`. "Join" is no-op.
+- **Appointment cards:** The prominent card (glass/shadow + join button) appears when an appointment is in progress or starts within 10 minutes, controlled by `Appointment.isWithinJoinWindow()`. Provider name is always shown as a deliberate UX choice: it gives context at a glance without tapping in.
 - **New Appointment sheet:** Toolbar button present on all OS versions; sheet is intentionally empty (demonstrative only).
 - **Tab bar icons:** The selected/unselected icon swap (`icon-calendar-filled` vs `icon-calendar`) is only implemented for the Appointments tab, as that was the only filled variant provided.
 - **Dark mode:** Custom colors live in `Assets.xcassets` as named color sets with explicit light/dark values, surfaced as type-safe properties via `Color+Tokens.swift`. System colors are used where possible.
 - **Typography & localization:** System fonts throughout. Strings use `String(localized:)` via a `Copy` enum and `Localizable.xcstrings`. Date components use `Calendar.current` and locale-aware formatters.
-- **Accessibility:** Semantic labels, Reduce Motion support, 44pt touch targets, and system colors for contrast. Dynamic Type is supported, but needs polish for production; `CalendarIcon` and the tab picker use fixed sizes that would need flexible layouts in production.
-- **Testing:** `HTTPClient` is covered with Swift Testing + `MockURLProtocol`, testing success, 401, and malformed JSON for both endpoints. I opted out of a protocol abstraction for `HTTPClient` given the narrow scope; in production I'd extract a protocol to enable VM-level unit testing and easier mocking. `AppointmentsViewModel` is initialized via `_viewModel = State(initialValue:)` in the `AppointmentsList` init — the idiomatic SwiftUI pattern for injecting an `@Observable` view model that needs to be owned as `@State` while still supporting preview injection.
+- **Accessibility:** Semantic labels, Reduce Motion support, 44pt touch targets, and system colors for contrast. Dynamic Type is implemented via `@ScaledMetric` throughout.
+- **Testing:** `HTTPClient` is covered with Swift Testing + `MockURLProtocol`, testing success, 401, and malformed JSON for both endpoints. `HTTPClient` conforms to `HTTPClientProtocol`, which both ViewModels depend on; a `MockHTTPClient` conforming to the same protocol enables ViewModel-level unit testing without any URLSession machinery. `Appointment.isWithinJoinWindow()` is covered with boundary-condition tests. `AppointmentsViewModel` is initialized via `_viewModel = State(initialValue:)` in the `AppointmentsList` init — the idiomatic SwiftUI pattern for injecting an `@Observable` view model that needs to be owned as `@State` while still supporting preview injection.
 - **Attribution:** Login photo by [Airam Dato-on](https://unsplash.com/@airamdphoto?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/photos/woman-in-gray-button-up-shirt-holding-white-ceramic-mug-T90gWliuCQQ?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText).
 - **Use of AI:**  The app was built with Xcode and Cursor using Anthropic (Claude) models. Architecture decisions, tradeoffs, and all final judgment calls were mine. This reflects how I'd work on your team.
+
+## What I'd Improve With More Time
+- **Token persistence:** Move the auth token from root `@State` to Keychain, add proactive refresh before expiry, and redirect to login on 401.
+- **Dynamic Type polish:** `CalendarIcon` and the tab picker use fixed sizes that would need flexible layouts to fully support extreme text size categories.
+- **Error recovery:** Add retry logic with exponential backoff for failed network requests rather than relying on manual retry.
+- **Placeholder tabs:** Chat and Journal are empty stubs. I'd build at least a representative mock state to better demonstrate the full tab structure.
 
 ## Time Breakdown
 

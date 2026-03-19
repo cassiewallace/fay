@@ -12,6 +12,7 @@ enum APIConstants {
 
     // MARK: - Public
 
+    // This is a compile-time constant with a known-valid URL string; force unwrap is intentional.
     static let baseURL = URL(string: "https://node-api-for-candidates.onrender.com")!
     static let signInPath = "signin"
     static let appointmentsPath = "appointments"

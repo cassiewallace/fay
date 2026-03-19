@@ -14,8 +14,8 @@ final class AppointmentsViewModel {
 
     // MARK: - Lifecycle
 
-    init() {
-        self.client = HTTPClient.shared
+    init(client: any HTTPClientProtocol = HTTPClient.shared) {
+        self.client = client
     }
 
     // MARK: - Public
@@ -42,12 +42,12 @@ final class AppointmentsViewModel {
         do {
             let appointments = try await client.fetchAppointments(token: token)
             state = .loaded(appointments)
-        } catch {
-            state = .error(error.localizedDescription)
+        } catch let thrownError {
+            state = .error(thrownError.localizedDescription)
         }
     }
 
     // MARK: - Private
 
-    private let client: HTTPClient
+    private let client: any HTTPClientProtocol
 }

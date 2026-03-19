@@ -34,3 +34,5 @@ enum ViewState<T> {
         return nil
     }
 }
+
+extension ViewState: Equatable where T: Equatable {}

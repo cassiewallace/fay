@@ -24,7 +24,7 @@ enum HTTPClientError: Error, LocalizedError, Equatable {
     }
 }
 
-struct HTTPClient {
+struct HTTPClient: HTTPClientProtocol {
 
     // MARK: - Lifecycle
 

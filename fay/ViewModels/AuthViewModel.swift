@@ -14,8 +14,8 @@ final class AuthViewModel {
 
     // MARK: - Lifecycle
 
-    init() {
-        self.client = HTTPClient.shared
+    init(client: any HTTPClientProtocol = HTTPClient.shared) {
+        self.client = client
     }
 
     // MARK: - Public
@@ -28,13 +28,13 @@ final class AuthViewModel {
             let token = try await client.signIn(username: username, password: password)
             state = .idle
             return token
-        } catch {
-            state = .error(error.localizedDescription)
+        } catch let thrownError {
+            state = .error(thrownError.localizedDescription)
             return nil
         }
     }
 
     // MARK: - Private
 
-    private let client: HTTPClient
+    private let client: any HTTPClientProtocol
 }

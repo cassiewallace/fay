@@ -9,9 +9,11 @@ import SwiftUI
 
 struct ProfileScreen: View {
 
-    // MARK: - Body
+    // MARK: - Private Properties
 
     @Environment(\.signOut) private var signOut
+
+    // MARK: - Body
 
     var body: some View {
         NavigationStack {

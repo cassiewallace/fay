@@ -15,7 +15,11 @@ struct AppTabBar: View {
     
     // MARK: - Private Properties
     
-    @State private var selectedTab = 0
+    private enum Tab {
+        case appointments, chat, journal, profile
+    }
+
+    @State private var selectedTab: Tab = .appointments
 
     // MARK: - Lifecycle
 
@@ -34,27 +38,27 @@ struct AppTabBar: View {
         TabView(selection: $selectedTab) {
             AppointmentsList(token: token)
                 .tabItem {
-                    Label(Copy.Tabs.appointments, image: selectedTab == 0 ? "icon-calendar-filled" : "icon-calendar")
+                    Label(Copy.Tabs.appointments, image: selectedTab == .appointments ? "icon-calendar-filled" : "icon-calendar")
                 }
-                .tag(0)
+                .tag(Tab.appointments)
 
             ChatScreen()
                 .tabItem {
                     Label(Copy.Tabs.chat, image: "icon-chats")
                 }
-                .tag(1)
+                .tag(Tab.chat)
 
             JournalScreen()
                 .tabItem {
                     Label(Copy.Tabs.journal, image: "icon-notebook")
                 }
-                .tag(2)
+                .tag(Tab.journal)
 
             ProfileScreen()
                 .tabItem {
                     Label(Copy.Tabs.profile, image: "icon-user")
                 }
-                .tag(3)
+                .tag(Tab.profile)
         }
         .tint(.accentFill.primary)
     }

@@ -23,8 +23,8 @@ An appointment app for iOS built with SwiftUI.
 ## What I'd Improve With More Time
 - **Token persistence:** Move the auth token from root `@State` to Keychain, add proactive refresh before expiry, and redirect to login on 401.
 - **Dynamic Type polish:** `CalendarIcon` and the tab picker use fixed sizes that would need flexible layouts to fully support extreme text size categories.
-- **Error recovery:** Add retry logic with exponential backoff for failed network requests rather than relying on manual retry.
-- **Placeholder tabs:** Chat and Journal are empty stubs. I'd build at least a representative mock state to better demonstrate the full tab structure.
+- **Error recovery:** Add retry logic for failed network requests rather than relying on manual retry.
+- **New appointment sheet:** Add the ability to create fake appointments to make testing easier, even with no upcoming appointments.
 
 ## Time Breakdown
 
